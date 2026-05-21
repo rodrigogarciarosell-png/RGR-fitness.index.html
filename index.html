@@ -738,7 +738,7 @@ const SCHEDULE = {
   2: { name: 'Mar', type: 'push',    label: 'PECHO',   class: 'push-day', time: '07:00' },
   3: { name: 'Mié', type: 'pilates', label: 'PILATES', class: 'pilates-day' },
   4: { name: 'Jue', type: 'pull',    label: 'ESPALDA', class: 'pull-day', time: '07:00' },
-  5: { name: 'Vie', type: 'pull',    label: 'ESPALDA', class: 'pull-day', time: '07:00' },
+  5: { name: 'Vie', type: 'rest',    label: 'DESCANSO', class: '' },
   6: { name: 'Sáb', type: 'legs',    label: 'PIERNAS', class: 'legs-day', time: '07:00' },
 };
 
@@ -1262,7 +1262,7 @@ function scheduleAllNotifications() {
   const now = new Date();
 
   // Pre-workout: 30 min before each gym day this week
-  [2,4,5,6].forEach(dayOfWeek => {
+  [2,4,6].forEach(dayOfWeek => {
     const sched = SCHEDULE[dayOfWeek];
     if (!sched.time) return;
     if (!state.settings.preworkout) return;
@@ -1289,7 +1289,7 @@ function scheduleAllNotifications() {
     const t = setTimeout(() => {
       const today = new Date().getDay();
       const hasSession = state.sessions.some(s => new Date(s.date).toDateString() === new Date().toDateString());
-      if (!hasSession && [2,4,5,6].includes(today)) {
+      if (!hasSession && [2,4,6].includes(today)) {
         new Notification('📋 ¿Registraste tu entreno?', { body: 'No encontramos sesión de hoy. ¿Entrenaste? Regístrala en el tracker.' });
       }
     }, ms);
@@ -1323,7 +1323,7 @@ function toggleSetting(btn, key) {
 
 function saveDefaultTime() {
   const val = document.getElementById('default-time').value;
-  [2,4,5,6].forEach(d => { if (SCHEDULE[d].time) SCHEDULE[d].time = val; });
+  [2,4,6].forEach(d => { if (SCHEDULE[d].time) SCHEDULE[d].time = val; });
   renderSchedGrid();
   scheduleAllNotifications();
   showToast('✓ Horario actualizado', 'info');
