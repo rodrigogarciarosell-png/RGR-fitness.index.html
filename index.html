@@ -55,43 +55,43 @@ body {
 }
 @keyframes glowDrift { to { transform: translate(-40px, 60px); } }
 
-.app { position: relative; z-index: 1; max-width: 480px; margin: 0 auto; padding-bottom: 80px; }
+.app { position: relative; z-index: 1; max-width: 390px; margin: 0 auto; padding-bottom: 80px; }
 
 /* ── NAV TABS ── */
 .tab-bar {
   position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-  width: 100%; max-width: 480px;
+  width: 100%; max-width: 390px;
   background: rgba(13,13,20,0.96);
   backdrop-filter: blur(20px);
   border-top: 1px solid var(--border);
   display: grid; grid-template-columns: repeat(4, 1fr);
-  z-index: 100; padding: 8px 0 12px;
+  z-index: 100; padding: 6px 0 10px;
 }
 .tab-btn {
-  display: flex; flex-direction: column; align-items: center; gap: 3px;
+  display: flex; flex-direction: column; align-items: center; gap: 2px;
   background: none; border: none; color: var(--muted);
-  font-family: 'Syne', sans-serif; font-size: 0.6rem;
-  letter-spacing: 0.5px; cursor: pointer; padding: 4px 0;
+  font-family: 'Syne', sans-serif; font-size: 0.55rem;
+  letter-spacing: 0; cursor: pointer; padding: 3px 0;
   transition: color 0.2s;
 }
-.tab-btn svg { width: 20px; height: 20px; stroke-width: 1.5; }
+.tab-btn svg { width: 18px; height: 18px; stroke-width: 1.5; }
 .tab-btn.active { color: var(--accent); }
 .tab-btn.active svg { filter: drop-shadow(0 0 6px var(--accent)); }
 
 /* ── VIEWS ── */
-.view { display: none; padding: 0 16px; animation: fadeUp 0.3s ease; }
+.view { display: none; padding: 0 10px; animation: fadeUp 0.3s ease; }
 .view.active { display: block; }
 @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
 
 /* ── HEADER ── */
 .page-header {
-  padding: 20px 0 16px;
+  padding: 14px 0 12px;
   display: flex; justify-content: space-between; align-items: flex-end;
-  border-bottom: 1px solid var(--border); margin-bottom: 20px;
+  border-bottom: 1px solid var(--border); margin-bottom: 14px;
 }
 .page-header h1 {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 2.8rem; line-height: 1;
+  font-size: 2.2rem; line-height: 1;
   color: var(--accent);
   text-shadow: 0 0 30px rgba(200,255,0,0.4);
   letter-spacing: 2px;
@@ -105,9 +105,9 @@ body {
 .card {
   background: var(--card);
   border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 12px;
+  border-radius: 14px;
+  padding: 12px;
+  margin-bottom: 10px;
 }
 .card-label {
   font-size: 0.62rem; text-transform: uppercase; letter-spacing: 1.5px;
@@ -119,7 +119,7 @@ body {
 .today-workout {
   background: linear-gradient(135deg, #1a1a28 0%, #13131e 100%);
   border: 1px solid var(--border);
-  border-radius: 20px; padding: 20px; margin-bottom: 12px;
+  border-radius: 16px; padding: 14px; margin-bottom: 10px;
   position: relative; overflow: hidden;
 }
 .today-workout::before {
@@ -145,14 +145,14 @@ body {
 .tag-rest { background: rgba(96,96,160,0.12); color: var(--muted); }
 .tag-pilates { background: rgba(236,72,153,0.12); color: var(--pink); }
 
-.workout-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: 2px; margin-bottom: 4px; }
+.workout-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 1px; margin-bottom: 4px; }
 .workout-meta { font-size: 0.75rem; color: var(--muted); }
 
 .start-btn {
-  width: 100%; margin-top: 14px; padding: 13px;
+  width: 100%; margin-top: 10px; padding: 11px;
   background: var(--accent); border: none; border-radius: 12px;
-  font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem;
-  letter-spacing: 2px; color: #0d0d14; cursor: pointer;
+  font-family: 'Bebas Neue', sans-serif; font-size: 1rem;
+  letter-spacing: 1px; color: #0d0d14; cursor: pointer;
   transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;
 }
 .start-btn:active { transform: scale(0.98); }
@@ -161,12 +161,12 @@ body {
 .start-btn.legs-btn { background: var(--purple); color: #fff; }
 
 /* ── WEEK STRIP ── */
-.week-strip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-bottom: 12px; }
+.week-strip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-bottom: 10px; }
 .week-day {
   background: var(--card); border: 1px solid var(--border);
-  border-radius: 10px; padding: 8px 4px; text-align: center;
-  font-size: 0.58rem; color: var(--muted); cursor: pointer;
-  transition: all 0.2s; letter-spacing: 0.3px;
+  border-radius: 8px; padding: 6px 2px; text-align: center;
+  font-size: 0.52rem; color: var(--muted); cursor: pointer;
+  transition: all 0.2s; letter-spacing: 0;
 }
 .week-day .wd-name { font-size: 0.55rem; text-transform: uppercase; margin-bottom: 2px; }
 .week-day .wd-icon { font-size: 0.9rem; margin: 2px 0; }
@@ -179,8 +179,8 @@ body {
 .notif-banner {
   background: linear-gradient(135deg, rgba(200,255,0,0.1) 0%, rgba(200,255,0,0.03) 100%);
   border: 1px solid rgba(200,255,0,0.3);
-  border-radius: 14px; padding: 14px 16px; margin-bottom: 12px;
-  display: flex; align-items: center; gap: 12px; cursor: pointer;
+  border-radius: 12px; padding: 10px 12px; margin-bottom: 10px;
+  display: flex; align-items: center; gap: 10px; cursor: pointer;
 }
 .notif-banner .notif-icon { font-size: 1.5rem; }
 .notif-banner .notif-text { flex: 1; }
@@ -194,7 +194,7 @@ body {
 .session-overlay {
   display: none; position: fixed; inset: 0;
   background: rgba(13,13,20,0.98); z-index: 200;
-  overflow-y: auto; padding: 20px 16px 100px;
+  overflow-y: auto; padding: 14px 10px 0;
 }
 .session-overlay.open { display: block; animation: fadeUp 0.3s ease; }
 
@@ -202,7 +202,7 @@ body {
   display: flex; justify-content: space-between; align-items: center;
   margin-bottom: 20px;
 }
-.session-top h2 { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; letter-spacing: 2px; color: var(--accent2); }
+.session-top h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: 1px; color: var(--accent2); }
 .close-btn {
   background: var(--card); border: 1px solid var(--border);
   border-radius: 10px; color: var(--muted); padding: 8px 12px;
@@ -211,13 +211,13 @@ body {
 
 .ex-card {
   background: var(--card); border: 1px solid var(--border);
-  border-radius: 14px; padding: 14px; margin-bottom: 10px;
+  border-radius: 12px; padding: 10px; margin-bottom: 8px;
   transition: border-color 0.3s;
 }
 .ex-card.done-card { border-color: rgba(0,255,200,0.35); }
 .ex-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
 .ex-num { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--muted); margin-right: 6px; }
-.ex-name { font-size: 0.9rem; font-weight: 700; flex: 1; }
+.ex-name { font-size: 0.82rem; font-weight: 700; flex: 1; }
 .ex-badge {
   font-size: 0.6rem; padding: 2px 7px; border-radius: 20px;
   font-family: 'JetBrains Mono', monospace;
@@ -247,8 +247,8 @@ body {
 .set-label { font-family: 'JetBrains Mono', monospace; font-size: 0.65rem; color: var(--muted); text-align: center; }
 .set-input {
   background: var(--surface); border: 1px solid var(--border);
-  border-radius: 8px; color: var(--text); padding: 7px 4px;
-  font-family: 'JetBrains Mono', monospace; font-size: 0.85rem;
+  border-radius: 8px; color: var(--text); padding: 6px 2px;
+  font-family: 'JetBrains Mono', monospace; font-size: 0.8rem;
   text-align: center; width: 100%;
   -moz-appearance: textfield;
 }
@@ -279,11 +279,13 @@ body {
 }
 
 .session-save-bar {
-  position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-  width: 100%; max-width: 480px;
-  background: rgba(13,13,20,0.97); backdrop-filter: blur(20px);
-  border-top: 1px solid var(--border); padding: 12px 16px;
-  display: flex; gap: 10px; z-index: 250;
+  position: sticky; bottom: 0;
+  width: 100%;
+  background: rgba(13,13,20,0.98); backdrop-filter: blur(20px);
+  border-top: 2px solid var(--accent);
+  padding: 14px 16px 24px;
+  display: flex; gap: 10px; z-index: 300;
+  margin-top: 20px;
 }
 .btn-primary {
   flex: 1; padding: 13px; background: var(--accent); border: none;
@@ -300,13 +302,13 @@ body {
 }
 
 /* ── PROGRESS VIEW ── */
-.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
 .stat-card {
   background: var(--card); border: 1px solid var(--border);
   border-radius: 14px; padding: 14px;
 }
 .stat-card .s-val {
-  font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem;
+  font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem;
   line-height: 1; color: var(--accent);
 }
 .stat-card .s-unit { font-size: 0.7rem; color: var(--muted); }
@@ -340,11 +342,11 @@ body {
 .garmin-logo { font-size: 1.5rem; }
 .garmin-title { font-weight: 700; font-size: 0.95rem; }
 .garmin-subtitle { font-size: 0.7rem; color: var(--muted); }
-.garmin-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.garmin-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
 .g-metric {
-  background: rgba(0,0,0,0.3); border-radius: 10px; padding: 10px 8px; text-align: center;
+  background: rgba(0,0,0,0.3); border-radius: 8px; padding: 7px 4px; text-align: center;
 }
-.g-metric .gm-val { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; color: var(--accent2); line-height: 1; }
+.g-metric .gm-val { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; color: var(--accent2); line-height: 1; }
 .g-metric .gm-label { font-size: 0.58rem; text-transform: uppercase; color: var(--muted); letter-spacing: 0.5px; margin-top: 3px; }
 .import-btn {
   width: 100%; margin-top: 12px; padding: 11px;
@@ -385,7 +387,7 @@ body {
 }
 .time-input:focus { outline: none; border-color: var(--accent); }
 
-.sched-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin-top: 12px; }
+.sched-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-top: 10px; }
 .sched-day {
   border-radius: 10px; padding: 8px 4px; text-align: center;
   font-size: 0.58rem; text-transform: uppercase; cursor: pointer;
@@ -417,7 +419,7 @@ body {
   font-size: 1rem; letter-spacing: 1px; color: #0d0d14; cursor: pointer;
 }
 .big-weight {
-  font-family: 'Bebas Neue', sans-serif; font-size: 4rem;
+  font-family: 'Bebas Neue', sans-serif; font-size: 3rem;
   color: var(--accent); line-height: 1;
   text-shadow: 0 0 30px rgba(200,255,0,0.3);
 }
@@ -447,6 +449,78 @@ body {
 .file-drop input { display: none; }
 .file-drop p { font-size: 0.8rem; color: var(--muted); margin-top: 6px; }
 .file-drop .fd-icon { font-size: 2rem; }
+
+
+/* ── GALAXY Z FOLD 6 COVER SCREEN (~360-390px) ── */
+@media screen and (max-width: 390px) {
+  .app { max-width: 100%; padding-bottom: 72px; }
+  
+  .page-header h1 { font-size: 1.9rem; }
+  .header-date .day { font-size: 1.4rem; }
+  
+  .week-day { padding: 5px 1px; border-radius: 7px; }
+  .week-day .wd-name { font-size: 0.48rem; }
+  .week-day .wd-icon { font-size: 0.75rem; margin: 1px 0; }
+  .week-day .wd-type { font-size: 0.62rem; }
+  
+  .big-weight { font-size: 2.6rem; }
+  .workout-title { font-size: 1.3rem; }
+  
+  .ex-card { padding: 9px 8px; }
+  .ex-name { font-size: 0.78rem; }
+  .ex-tip { font-size: 0.65rem; padding: 5px 8px; }
+  .ex-last { font-size: 0.63rem; padding: 4px 8px; }
+  .set-input { padding: 5px 2px; font-size: 0.75rem; }
+  .set-check { width: 26px; height: 26px; }
+  .set-label { font-size: 0.58rem; }
+  .ex-badge { font-size: 0.55rem; padding: 2px 5px; }
+  
+  .cardio-block { padding: 10px 12px; }
+  .cardio-timer-display { font-size: 2rem; }
+  
+  .btn-primary { padding: 11px; font-size: 0.9rem; }
+  .btn-secondary { padding: 11px 12px; font-size: 0.72rem; }
+  .session-save-bar { padding: 10px 10px 18px; gap: 8px; }
+  
+  .stats-grid { grid-template-columns: 1fr 1fr; gap: 6px; }
+  .stat-card { padding: 10px; }
+  .stat-card .s-val { font-size: 1.6rem; }
+  
+  .garmin-metrics { grid-template-columns: repeat(3, 1fr); gap: 4px; }
+  .g-metric { padding: 6px 3px; }
+  .g-metric .gm-val { font-size: 1.1rem; }
+  .g-metric .gm-label { font-size: 0.52rem; }
+  
+  .inbody-label { font-size: 0.72rem; }
+  .inbody-val { font-size: 0.78rem; }
+  
+  .setting-label { font-size: 0.78rem; }
+  .setting-sub { font-size: 0.62rem; }
+  .time-input { width: 80px; font-size: 0.75rem; padding: 5px 6px; }
+  
+  .sched-day { padding: 6px 2px; border-radius: 7px; }
+  .sched-day .sd-type { font-size: 0.72rem; }
+  
+  .tab-btn { font-size: 0.5rem; padding: 2px 0; }
+  .tab-btn svg { width: 17px; height: 17px; }
+  
+  .session-top { margin-bottom: 14px; }
+  .session-top h2 { font-size: 1.4rem; }
+  .close-btn { padding: 6px 10px; font-size: 0.72rem; }
+  
+  .today-workout { padding: 12px; }
+  .start-btn { padding: 10px; font-size: 0.9rem; }
+  
+  .notif-banner { padding: 8px 10px; gap: 8px; }
+  .notif-banner .notif-icon { font-size: 1.2rem; }
+  .notif-banner .notif-title { font-size: 0.78rem; }
+  .notif-banner .notif-sub { font-size: 0.62rem; }
+  
+  .card-label { font-size: 0.58rem; }
+  .weight-row { gap: 6px; }
+  .w-input { font-size: 1rem; padding: 8px 10px; }
+  .w-btn { padding: 8px 12px; font-size: 0.9rem; }
+}
 
 </style>
 </head>
