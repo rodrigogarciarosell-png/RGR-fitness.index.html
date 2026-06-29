@@ -229,6 +229,12 @@ body {
   padding: 6px 10px; background: rgba(255,255,255,0.03);
   border-radius: 8px; border-left: 2px solid var(--border);
 }
+.ex-last {
+  font-size: 0.7rem; color: var(--accent); margin-bottom: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  padding: 5px 10px; background: rgba(200,255,0,0.06);
+  border-radius: 8px; border-left: 2px solid var(--accent);
+}
 .sets-header {
   display: grid; grid-template-columns: 22px 1fr 1fr 34px;
   gap: 6px; margin-bottom: 4px;
@@ -534,7 +540,7 @@ body {
         <div class="s-val" id="pg-sessions">0</div>
         <div class="s-unit">sesiones</div>
         <div class="s-label">Este mes</div>
-        <div class="s-trend" style="color:var(--muted);font-size:0.7rem;">Target: 12+</div>
+        <div class="s-trend" style="color:var(--muted);font-size:0.7rem;">Target: 16+</div>
       </div>
     </div>
 
@@ -617,6 +623,12 @@ body {
       <div class="card-label">Historial de peso</div>
       <div class="weight-mini-chart" id="weight-chart-big" style="height:70px;"></div>
       <div id="weight-history-list" style="margin-top:12px;"></div>
+    </div>
+
+    <!-- Exercise progress history -->
+    <div class="card">
+      <div class="card-label">Progreso por ejercicio <span style="color:var(--muted);font-size:0.6rem;">Últimas 12 sesiones</span></div>
+      <div id="exercise-history-list"></div>
     </div>
   </div>
 
@@ -733,65 +745,78 @@ body {
 // DATA
 // ═══════════════════════════════════════════════════
 const SCHEDULE = {
-  0: { name: 'Dom', type: 'rest',    label: 'DESC',    class: '' },
-  1: { name: 'Lun', type: 'pilates', label: 'PILATES', class: 'pilates-day' },
-  2: { name: 'Mar', type: 'push',    label: 'PECHO',   class: 'push-day', time: '07:00' },
-  3: { name: 'Mié', type: 'pilates', label: 'PILATES', class: 'pilates-day' },
-  4: { name: 'Jue', type: 'pull',    label: 'ESPALDA', class: 'pull-day', time: '07:00' },
-  5: { name: 'Vie', type: 'rest',    label: 'DESCANSO', class: '' },
-  6: { name: 'Sáb', type: 'legs',    label: 'PIERNAS', class: 'legs-day', time: '07:00' },
+  0: { name: 'Dom', type: 'rest',    label: 'DESC',     class: '' },
+  1: { name: 'Lun', type: 'push',    label: 'TORSO 1',  class: 'push-day', workout: 'torso1', time: '07:00' },
+  2: { name: 'Mar', type: 'legs',    label: 'PIERNA 1', class: 'legs-day', workout: 'leg1',   time: '07:00' },
+  3: { name: 'Mié', type: 'pilates', label: 'PILATES',  class: 'pilates-day' },
+  4: { name: 'Jue', type: 'pull',    label: 'TORSO 2',  class: 'pull-day', workout: 'torso2', time: '07:00' },
+  5: { name: 'Vie', type: 'legs',    label: 'PIERNA 2', class: 'legs-day', workout: 'leg2',   time: '07:00' },
+  6: { name: 'Sáb', type: 'pilates', label: 'PILATES',  class: 'pilates-day' },
 };
 
 const WORKOUTS = {
-  pull: {
-    title: 'ESPALDA / BÍCEPS',
-    color: 'accent2',
-    tag: 'tag-pull',
-    tagLabel: '💪 TIRÓN',
-    btnClass: 'pull-btn',
-    meta: '50 min fuerza + 20-25 min LISS cardio',
-    exercises: [
-      { name: 'Dominadas / Jalón al Pecho', type: 'c', tip: 'Agarre ancho. Jala los codos hacia los bolsillos. Fase excéntrica controlada.', sets: 4, repsTarget: '8-10' },
-      { name: 'Remo con Barra (agarre supino)', type: 'c', tip: 'Torso a 45°. Barra al ombligo. Activa el dorsal bajo.', sets: 3, repsTarget: '10' },
-      { name: 'Remo con Mancuerna a 1 mano', type: 'c', tip: 'Unilateral. Jala hacia la cadera. Corrige asimetrías.', sets: 3, repsTarget: '10-12/lado' },
-      { name: 'Remo Gironda (Polea baja V)', type: 'c', tip: 'Espalda fija. Retracción escapular profunda al jalar.', sets: 3, repsTarget: '12' },
-      { name: 'Curl Bíceps Barra Z', type: 'i', tip: 'De pie o banco Scott. Codos completamente fijos.', sets: 3, repsTarget: '10' },
-      { name: 'Curl Martillo Alternado', type: 'i', tip: 'Da grosor lateral al brazo. Supinador + braquial.', sets: 3, repsTarget: '12 total' },
-      { name: 'Curl Polea Baja con Cuerda', type: 'i', tip: 'Separar las manos al contraer. Aislamiento final.', sets: 2, repsTarget: '15' },
-    ]
-  },
-  push: {
-    title: 'PECHO / TRÍCEPS',
+  torso1: {
+    title: 'TORSO 1 · EMPUJE',
     color: 'accent3',
     tag: 'tag-push',
-    tagLabel: '🏋️ EMPUJE',
+    tagLabel: '🏋️ PECHO / HOMBRO / TRÍCEPS',
     btnClass: 'push-btn',
-    meta: '50 min fuerza + 20-25 min LISS cardio',
+    meta: 'Hipertrofia y fuerza · RIR 1-2 en cada serie',
     exercises: [
-      { name: 'Press de Banca Plano con Barra', type: 'c', tip: 'Excéntrica 3 seg (bajada lenta). Subida potente y explosiva.', sets: 4, repsTarget: '8-10' },
-      { name: 'Press Inclinado con Mancuernas', type: 'c', tip: 'Banco a 30-45°. Prioriza pectoral superior.', sets: 3, repsTarget: '10-12' },
-      { name: 'Fondos en Paralelas (Dips)', type: 'c', tip: 'Cuerpo ligeramente inclinado al frente. Pecho al frente.', sets: 3, repsTarget: 'Al fallo' },
-      { name: 'Aperturas Peck Deck / Poleas', type: 'i', tip: 'Sostener 1 segundo la contracción al cerrar. Puro aislamiento.', sets: 3, repsTarget: '12-15' },
-      { name: 'Press Francés con Barra Z', type: 'i', tip: 'Acostado. Barra directo a la frente. Codos cerrados.', sets: 3, repsTarget: '10' },
-      { name: 'Extensiones Tríceps Cuerda', type: 'i', tip: 'Codos fijos a costillas. Abre las puntas al fondo.', sets: 3, repsTarget: '12-15' },
-      { name: 'Copa de Tríceps / Fondos bancos', type: 'i', tip: 'Bombeo final. Vaciado de glucógeno.', sets: 2, repsTarget: '15' },
+      { name: 'Press de Banca con Barra o Mancuernas', type: 'c', tip: 'Movimiento principal. Descanso 2 min entre series.', sets: 4, repsTarget: '8-10' },
+      { name: 'Remo con Barra o Máquina (Gironda/Sentado)', type: 'c', tip: 'Equilibra el empuje con jalón en el mismo día. Descanso 90 seg.', sets: 4, repsTarget: '10' },
+      { name: 'Press Inclinado con Mancuernas', type: 'c', tip: 'Banco 30-45°. Prioriza pectoral superior. Descanso 90 seg.', sets: 3, repsTarget: '10-12' },
+      { name: 'Jalón al Pecho en Polea (agarre prono)', type: 'c', tip: 'Complementa el trabajo de dorsal. Descanso 90 seg.', sets: 3, repsTarget: '12' },
+      { name: 'Elevaciones Laterales (mancuerna o polea)', type: 'i', tip: 'Sube hasta paralelo, codos ligeramente flexionados. Descanso 60 seg.', sets: 4, repsTarget: '12-15' },
+      { name: 'Extensiones de Tríceps en Polea Alta', type: 'i', tip: 'Codos fijos a costillas. Descanso 60 seg.', sets: 3, repsTarget: '12' },
     ]
   },
-  legs: {
-    title: 'PIERNAS / HOMBROS',
+  leg1: {
+    title: 'PIERNA 1 · CUÁDRICEPS',
     color: 'purple',
     tag: 'tag-legs',
-    tagLabel: '🦵 PIERNAS + ΔHOMBROS',
+    tagLabel: '🦵 CUÁDRICEPS + CORE',
     btnClass: 'legs-btn',
-    meta: '50 min fuerza + 20-25 min LISS cardio · Máximo gasto calórico',
+    meta: 'Hipertrofia y fuerza · RIR 1-2 en cada serie',
     exercises: [
-      { name: 'Sentadilla con Barra', type: 'c', tip: 'Rey del gasto calórico. Profundidad paralela. Core activado. 4 series pesadas.', sets: 4, repsTarget: '8-10' },
-      { name: 'Prensa de Piernas', type: 'c', tip: 'Pies altos = glúteo. Pies bajos = cuádriceps. Elige según debilidad.', sets: 3, repsTarget: '10-12' },
-      { name: 'Peso Muerto Rumano', type: 'c', tip: 'Isquiotibiales y glúteo. Cadera atrás, espalda neutra. Muy controlado.', sets: 3, repsTarget: '10' },
-      { name: 'Press Militar con Barra', type: 'c', tip: 'Hombros. De pie o sentado. Activa el core. Principal movimiento.', sets: 4, repsTarget: '8-10' },
-      { name: 'Elevaciones Laterales', type: 'i', tip: 'Codos ligeramente flexionados. Sube hasta paralelo. Clave para cintura visual.', sets: 3, repsTarget: '12-15' },
-      { name: 'Extensión de Cuádriceps', type: 'i', tip: 'Aislamiento final pierna. Sostener 1 seg arriba.', sets: 3, repsTarget: '12-15' },
-      { name: 'Curl Femoral Tumbado', type: 'i', tip: 'Isquios. Fase excéntrica muy lenta (4 seg bajada).', sets: 3, repsTarget: '12' },
+      { name: 'Sentadilla Libre con Barra o Smith', type: 'c', tip: 'Movimiento principal. Profundidad paralela. Descanso 2 min.', sets: 4, repsTarget: '8-10' },
+      { name: 'Prensa de Piernas', type: 'c', tip: 'Pies altos = glúteo, pies bajos = cuádriceps. Descanso 90 seg.', sets: 3, repsTarget: '10-12' },
+      { name: 'Extensión de Cuádriceps en Máquina', type: 'i', tip: 'Última serie con dropset. Sostener 1 seg arriba. Descanso 60 seg.', sets: 3, repsTarget: '12-15' },
+      { name: 'Curl de Pierna Sentado o Acostado', type: 'i', tip: 'Trabajo de isquios para balancear la rodilla. Descanso 90 seg.', sets: 4, repsTarget: '12' },
+      { name: 'Elevación de Talones de pie', type: 'i', tip: 'Pantorrillas. Contracción completa arriba. Descanso 60 seg.', sets: 4, repsTarget: '15' },
+      { name: 'Rueda Abdominal o Plancha Dinámica', type: 'i', tip: 'Core. Series al fallo controlado, sin perder técnica.', sets: 3, repsTarget: 'Al fallo' },
+    ]
+  },
+  torso2: {
+    title: 'TORSO 2 · JALÓN',
+    color: 'accent2',
+    tag: 'tag-pull',
+    tagLabel: '💪 ESPALDA / DELTOIDE POST. / BÍCEPS',
+    btnClass: 'pull-btn',
+    meta: 'Hipertrofia y fuerza · RIR 1-2 en cada serie',
+    exercises: [
+      { name: 'Dominadas (o Jalón al Pecho supino)', type: 'c', tip: 'Movimiento principal. Amplitud completa. Descanso 2 min.', sets: 4, repsTarget: '8-10' },
+      { name: 'Press Militar con Mancuernas', type: 'c', tip: 'Hombros. De pie o sentado, core activo. Descanso 90 seg.', sets: 3, repsTarget: '10' },
+      { name: 'Remo Unilateral con Mancuerna', type: 'c', tip: 'Corrige asimetrías. Jala hacia la cadera. Descanso 90 seg.', sets: 3, repsTarget: '10/lado' },
+      { name: 'Aperturas para Pecho (Pec Deck o Cruces)', type: 'i', tip: 'Aislamiento de pectoral, sostener la contracción. Descanso 60 seg.', sets: 3, repsTarget: '12-15' },
+      { name: 'Pájaros / Vuelos Posteriores', type: 'i', tip: 'Deltoide posterior — clave para postura. Descanso 60 seg.', sets: 4, repsTarget: '15' },
+      { name: 'Curl de Bíceps Barra Z o Mancuernas Inclinado', type: 'i', tip: 'Codos fijos, controla la negativa. Descanso 60 seg.', sets: 3, repsTarget: '12' },
+    ]
+  },
+  leg2: {
+    title: 'PIERNA 2 · POSTERIOR',
+    color: 'purple',
+    tag: 'tag-legs',
+    tagLabel: '🦵 CADENA POSTERIOR + CORE',
+    btnClass: 'legs-btn',
+    meta: 'Hipertrofia y fuerza · RIR 1-2 en cada serie',
+    exercises: [
+      { name: 'Peso Muerto Rumano', type: 'c', tip: 'Glúteo e isquiotibiales. Cadera atrás, espalda neutra. Descanso 2 min.', sets: 4, repsTarget: '8-10' },
+      { name: 'Zancadas Caminando con Mancuernas', type: 'c', tip: 'Unilateral, controla la rodilla delantera. Descanso 90 seg.', sets: 3, repsTarget: '12 pasos/lado' },
+      { name: 'Hip Thrust con Barra', type: 'c', tip: 'Activación máxima de glúteo. Pausa 1 seg arriba. Descanso 2 min.', sets: 3, repsTarget: '10-12' },
+      { name: 'Extensión de Cuádriceps en Máquina', type: 'i', tip: 'Balance con el trabajo anterior de cuádriceps. Descanso 60 seg.', sets: 3, repsTarget: '12' },
+      { name: 'Elevación de Talones Sentado', type: 'i', tip: 'Pantorrillas, ángulo distinto al día 1. Descanso 60 seg.', sets: 4, repsTarget: '12-15' },
+      { name: 'Elevación de Piernas Colgado o Crunch en Polea', type: 'i', tip: 'Core inferior. Controla el balanceo.', sets: 3, repsTarget: '15' },
     ]
   }
 };
@@ -897,13 +922,13 @@ function renderTodayBlock() {
     return;
   }
 
-  const w = WORKOUTS[sched.type];
+  const w = WORKOUTS[sched.workout];
   block.innerHTML = `
     <div class="today-workout ${sched.type}">
       <div class="workout-type-tag ${w.tag}">${w.tagLabel}</div>
       <div class="workout-title">${w.title}</div>
       <div class="workout-meta">${w.meta}</div>
-      <button class="start-btn ${w.btnClass}" onclick="openSession('${sched.type}')">
+      <button class="start-btn ${w.btnClass}" onclick="openSession('${sched.workout}')">
         ▶ INICIAR SESIÓN
       </button>
     </div>`;
@@ -922,13 +947,22 @@ function openSession(type) {
   w.exercises.forEach((ex, ei) => {
     const card = document.createElement('div');
     card.className = 'ex-card'; card.id = `ex-card-${ei}`;
+    const lastEntry = getLastExercise(type, ei);
+    let lastHTML = '';
+    if (lastEntry) {
+      const lastSetsTxt = lastEntry.sets.map(s => `${s.kg||'-'}kg×${s.reps||'-'}`).join(' · ');
+      lastHTML = `<div class="ex-last">📅 ${formatShortDate(lastEntry.date)} — ${lastSetsTxt}</div>`;
+    }
     let setsHTML = `<div class="sets-header"><span>#</span><span>KG</span><span>REPS</span><span></span></div>`;
     for (let s = 0; s < ex.sets; s++) {
+      const lastSet = lastEntry && lastEntry.sets[s];
+      const kgPh = lastSet && lastSet.kg ? lastSet.kg : '—';
+      const repsPh = lastSet && lastSet.reps ? lastSet.reps : ex.repsTarget.split('-')[0];
       setsHTML += `
         <div class="set-row">
           <div class="set-label">S${s+1}</div>
-          <input class="set-input" type="number" placeholder="—" id="kg-${ei}-${s}" step="0.5">
-          <input class="set-input" type="number" placeholder="${ex.repsTarget.split('-')[0]}" id="reps-${ei}-${s}">
+          <input class="set-input" type="number" placeholder="${kgPh}" id="kg-${ei}-${s}" step="0.5">
+          <input class="set-input" type="number" placeholder="${repsPh}" id="reps-${ei}-${s}">
           <div class="set-check" id="chk-${ei}-${s}" onclick="checkSet(${ei},${s})"></div>
         </div>`;
     }
@@ -941,6 +975,7 @@ function openSession(type) {
         <span class="ex-badge ${ex.type==='c'?'badge-c':'badge-i'}">${ex.type==='c'?'Compuesto':'Aislamiento'}</span>
       </div>
       <div class="ex-tip">${ex.tip}</div>
+      ${lastHTML}
       <div class="sets-grid">${setsHTML}</div>`;
     container.appendChild(card);
   });
@@ -1011,18 +1046,79 @@ function closeSession() {
 }
 
 function saveSession() {
+  const w = WORKOUTS[currentSession.type];
+  const exerciseData = [];
+  let totalVolume = 0;
+
+  w.exercises.forEach((ex, ei) => {
+    const sets = [];
+    for (let s = 0; s < ex.sets; s++) {
+      const kgEl = document.getElementById(`kg-${ei}-${s}`);
+      const repsEl = document.getElementById(`reps-${ei}-${s}`);
+      const kg = kgEl && kgEl.value ? parseFloat(kgEl.value) : null;
+      const reps = repsEl && repsEl.value ? parseInt(repsEl.value) : null;
+      if (kg !== null && reps !== null) totalVolume += kg * reps;
+      sets.push({ kg, reps });
+    }
+    exerciseData.push({ name: ex.name, sets });
+  });
+
+  const hasAnyData = exerciseData.some(e => e.sets.some(s => s.kg !== null || s.reps !== null));
+  if (!hasAnyData) {
+    showToast('Registra al menos un peso/repetición antes de guardar');
+    return;
+  }
+
   const session = {
     date: new Date().toISOString(),
     type: currentSession.type,
     completed: true,
-    duration: Math.round((Date.now() - currentSession.startTime) / 60000)
+    duration: Math.round((Date.now() - currentSession.startTime) / 60000),
+    exercises: exerciseData,
+    totalVolume: Math.round(totalVolume)
   };
   state.sessions.push(session);
+
+  // Update per-exercise history index for quick lookup
+  if (!state.exerciseHistory) state.exerciseHistory = {};
+  if (!state.exerciseHistory[currentSession.type]) state.exerciseHistory[currentSession.type] = {};
+  exerciseData.forEach((ex, ei) => {
+    if (!ex.sets.some(s => s.kg !== null || s.reps !== null)) return;
+    if (!state.exerciseHistory[currentSession.type][ei]) state.exerciseHistory[currentSession.type][ei] = [];
+    state.exerciseHistory[currentSession.type][ei].push({ date: session.date, sets: ex.sets });
+    state.exerciseHistory[currentSession.type][ei] = state.exerciseHistory[currentSession.type][ei].slice(-12);
+  });
+
   saveState();
   closeSession();
   renderWeekStrip();
   renderProgressView();
-  showToast('✓ Sesión guardada');
+  showToast(`✓ Sesión guardada · Volumen: ${Math.round(totalVolume)} kg`);
+}
+
+function getLastExercise(workoutType, exerciseIndex) {
+  if (!state.exerciseHistory || !state.exerciseHistory[workoutType]) return null;
+  const arr = state.exerciseHistory[workoutType][exerciseIndex];
+  if (!arr || !arr.length) return null;
+  return arr[arr.length - 1];
+}
+
+function getExerciseAverage(workoutType, exerciseIndex) {
+  if (!state.exerciseHistory || !state.exerciseHistory[workoutType]) return null;
+  const arr = state.exerciseHistory[workoutType][exerciseIndex];
+  if (!arr || !arr.length) return null;
+  let totalKg = 0, totalReps = 0, count = 0;
+  arr.forEach(entry => entry.sets.forEach(s => {
+    if (s.kg !== null && s.reps !== null) { totalKg += s.kg; totalReps += s.reps; count++; }
+  }));
+  if (!count) return null;
+  return { avgKg: (totalKg/count).toFixed(1), avgReps: (totalReps/count).toFixed(1), sessions: arr.length };
+}
+
+function formatShortDate(iso) {
+  const d = new Date(iso);
+  const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+  return `${d.getDate()} ${months[d.getMonth()]}`;
 }
 
 // ═══════════════════════════════════════════════════
@@ -1102,7 +1198,7 @@ function renderRoutinesList() {
     const card = document.createElement('div');
     card.className = 'card';
     card.style.marginBottom = '12px';
-    const colors = { pull:'var(--accent2)', push:'var(--accent3)', legs:'var(--purple)' };
+    const colors = { torso1:'var(--accent3)', leg1:'var(--purple)', torso2:'var(--accent2)', leg2:'var(--purple)' };
     card.innerHTML = `
       <div class="card-label" style="color:${colors[key]};">${w.tagLabel}</div>
       <div style="font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:2px;margin-bottom:6px;">${w.title}</div>
@@ -1162,6 +1258,42 @@ function renderProgressView() {
   const el = document.getElementById('pg-sessions');
   if (el) el.textContent = thisMonth;
   if (state.garmin) renderGarminMetrics(state.garmin);
+  renderExerciseHistoryCard();
+}
+
+function renderExerciseHistoryCard() {
+  const el = document.getElementById('exercise-history-list');
+  if (!el) return;
+  if (!state.exerciseHistory || !Object.keys(state.exerciseHistory).length) {
+    el.innerHTML = `<div style="font-size:0.75rem;color:var(--muted);padding:8px 0;">Aún no hay sesiones registradas. Inicia un entreno y guarda tus pesos/reps para ver tu progreso aquí.</div>`;
+    return;
+  }
+  let html = '';
+  Object.entries(state.exerciseHistory).forEach(([workoutKey, exercises]) => {
+    const w = WORKOUTS[workoutKey];
+    if (!w) return;
+    html += `<div style="font-size:0.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin:14px 0 6px;">${w.title}</div>`;
+    Object.entries(exercises).forEach(([exIndex, arr]) => {
+      const ex = w.exercises[exIndex];
+      if (!ex || !arr.length) return;
+      const last = arr[arr.length - 1];
+      const avg = getExerciseAverage(workoutKey, exIndex);
+      if (!avg) return;
+      const lastTxt = last.sets.filter(s=>s.kg||s.reps).map(s => `${s.kg||'-'}×${s.reps||'-'}`).join(' · ');
+      html += `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);">
+          <div style="flex:1;">
+            <div style="font-size:0.78rem;font-weight:600;">${ex.name}</div>
+            <div style="font-size:0.66rem;color:var(--muted);margin-top:2px;">Última: ${formatShortDate(last.date)} — ${lastTxt}</div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-family:'JetBrains Mono',monospace;font-size:0.85rem;color:var(--accent);">${avg.avgKg}kg</div>
+            <div style="font-size:0.6rem;color:var(--muted);">prom. ${avg.avgReps} reps · ${avg.sessions}x</div>
+          </div>
+        </div>`;
+    });
+  });
+  el.innerHTML = html;
 }
 
 // ═══════════════════════════════════════════════════
@@ -1262,7 +1394,7 @@ function scheduleAllNotifications() {
   const now = new Date();
 
   // Pre-workout: 30 min before each gym day this week
-  [2,4,6].forEach(dayOfWeek => {
+  [1,2,4,5].forEach(dayOfWeek => {
     const sched = SCHEDULE[dayOfWeek];
     if (!sched.time) return;
     if (!state.settings.preworkout) return;
@@ -1272,7 +1404,7 @@ function scheduleAllNotifications() {
     target.setHours(h, m - 30, 0, 0);
     const ms = target - now;
     if (ms > 0 && ms < 7 * 24 * 60 * 60 * 1000) {
-      const labels = { 2:'Pecho & Tríceps', 4:'Espalda & Bíceps', 5:'Espalda & Bíceps', 6:'Piernas & Hombros' };
+      const labels = { 1:'Torso 1 - Empuje', 2:'Pierna 1 - Cuádriceps', 4:'Torso 2 - Jalón', 5:'Pierna 2 - Cadena Posterior' };
       const t = setTimeout(() => {
         new Notification(`⏰ Entreno en 30 min`, { body: `${labels[dayOfWeek]} — Prepara tu ropa, hidratación y concentración. ¡Tú puedes, Rodrigo!` });
       }, ms);
@@ -1289,7 +1421,7 @@ function scheduleAllNotifications() {
     const t = setTimeout(() => {
       const today = new Date().getDay();
       const hasSession = state.sessions.some(s => new Date(s.date).toDateString() === new Date().toDateString());
-      if (!hasSession && [2,4,6].includes(today)) {
+      if (!hasSession && [1,2,4,5].includes(today)) {
         new Notification('📋 ¿Registraste tu entreno?', { body: 'No encontramos sesión de hoy. ¿Entrenaste? Regístrala en el tracker.' });
       }
     }, ms);
@@ -1306,7 +1438,7 @@ function scheduleAllNotifications() {
     if (ms > 0) {
       const t = setTimeout(() => {
         const sessions = state.sessions.filter(s => { const d = new Date(s.date); return d >= getWeekStart() && d <= getWeekEnd() && s.completed; }).length;
-        new Notification('📊 Resumen semanal', { body: `Esta semana completaste ${sessions} de 3 sesiones de gimnasio. ¡${sessions >= 3 ? 'Semana perfecta 🔥' : 'La próxima semana la rompes 💪'}!` });
+        new Notification('📊 Resumen semanal', { body: `Esta semana completaste ${sessions} de 4 sesiones de gimnasio. ¡${sessions >= 4 ? 'Semana perfecta 🔥' : 'La próxima semana la rompes 💪'}!` });
       }, ms);
       window._notifTimeouts.push(t);
     }
@@ -1323,7 +1455,7 @@ function toggleSetting(btn, key) {
 
 function saveDefaultTime() {
   const val = document.getElementById('default-time').value;
-  [2,4,6].forEach(d => { if (SCHEDULE[d].time) SCHEDULE[d].time = val; });
+  [1,2,4,5].forEach(d => { if (SCHEDULE[d].time) SCHEDULE[d].time = val; });
   renderSchedGrid();
   scheduleAllNotifications();
   showToast('✓ Horario actualizado', 'info');
