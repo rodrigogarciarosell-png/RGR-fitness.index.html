@@ -340,29 +340,8 @@ body {
 .progress-bar-fill.fat { background: var(--accent3); }
 .progress-bar-fill.muscle { background: var(--accent2); }
 
-/* ── GARMIN IMPORT ── */
-.garmin-card {
-  background: linear-gradient(135deg, rgba(0,255,200,0.05) 0%, var(--card) 100%);
-  border: 1px solid rgba(0,255,200,0.15); border-radius: 16px; padding: 16px; margin-bottom: 12px;
-}
-.garmin-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-.garmin-logo { font-size: 1.5rem; }
-.garmin-title { font-weight: 700; font-size: 0.95rem; }
-.garmin-subtitle { font-size: 0.7rem; color: var(--muted); }
-.garmin-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
-.g-metric {
-  background: rgba(0,0,0,0.3); border-radius: 8px; padding: 7px 4px; text-align: center;
-}
-.g-metric .gm-val { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; color: var(--accent2); line-height: 1; }
-.g-metric .gm-label { font-size: 0.58rem; text-transform: uppercase; color: var(--muted); letter-spacing: 0.5px; margin-top: 3px; }
-.import-btn {
-  width: 100%; margin-top: 12px; padding: 11px;
-  background: rgba(0,255,200,0.1); border: 1px solid rgba(0,255,200,0.3);
-  border-radius: 10px; color: var(--accent2);
-  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.8rem;
-  cursor: pointer; letter-spacing: 0.5px; transition: all 0.2s;
-}
-.import-btn:hover { background: rgba(0,255,200,0.18); }
+/* ── WYZE SCALE IMPORT ── */
+
 
 /* ── SETTINGS VIEW ── */
 .setting-row {
@@ -408,6 +387,40 @@ body {
 .sched-day.push-day { border-color: var(--accent3); color: var(--accent3); }
 .sched-day.legs-day { border-color: var(--purple); color: var(--purple); }
 .sched-day.pilates-day { border-color: var(--pink); color: var(--pink); }
+
+
+/* ── WYZE SCALE ── */
+.wyze-card {
+  background: linear-gradient(135deg, rgba(200,255,0,0.06) 0%, var(--card) 100%);
+  border: 1px solid rgba(200,255,0,0.2); border-radius: 16px; padding: 14px; margin-bottom: 12px;
+}
+.wyze-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.wyze-logo { font-size: 1.4rem; }
+.wyze-title { font-weight: 700; font-size: 0.95rem; }
+.wyze-subtitle { font-size: 0.68rem; color: var(--muted); }
+.wyze-metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; margin-bottom: 10px; }
+.w-metric {
+  background: rgba(0,0,0,0.3); border-radius: 8px; padding: 8px 4px; text-align: center;
+}
+.w-metric .wm-val { font-family: 'Bebas Neue', sans-serif; font-size: 1.2rem; color: var(--accent); line-height: 1; }
+.w-metric .wm-label { font-size: 0.56rem; text-transform: uppercase; color: var(--muted); letter-spacing: 0.5px; margin-top: 2px; }
+.w-metric.highlight .wm-val { color: var(--accent2); }
+.w-metric.warn .wm-val { color: var(--accent3); }
+.wyze-import-btn {
+  width: 100%; padding: 10px;
+  background: rgba(200,255,0,0.08); border: 1px solid rgba(200,255,0,0.25);
+  border-radius: 10px; color: var(--accent);
+  font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.78rem;
+  cursor: pointer; transition: all 0.2s;
+}
+.wyze-import-btn:hover { background: rgba(200,255,0,0.15); }
+.wyze-trend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
+.wyze-trend-item {
+  background: rgba(0,0,0,0.2); border-radius: 8px; padding: 8px;
+  font-size: 0.68rem;
+}
+.wyze-trend-item .wt-label { color: var(--muted); margin-bottom: 2px; }
+.wyze-trend-item .wt-val { font-family: 'JetBrains Mono',monospace; font-size: 0.85rem; font-weight: 600; }
 
 /* ── WEIGHT INPUT ── */
 .weight-row { display: flex; gap: 8px; align-items: center; }
@@ -458,6 +471,77 @@ body {
 .file-drop .fd-icon { font-size: 2rem; }
 
 
+
+/* ── DAY CONFIG MODAL ── */
+.modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.85); z-index: 400;
+  align-items: flex-end; justify-content: center;
+}
+.modal-overlay.open { display: flex; animation: fadeUp 0.3s ease; }
+.modal-box {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 20px 20px 0 0; padding: 20px 16px 32px;
+  width: 100%; max-width: 390px;
+}
+.modal-title {
+  font-family: 'Bebas Neue',sans-serif; font-size: 1.5rem;
+  letter-spacing: 2px; color: var(--accent); margin-bottom: 4px;
+}
+.modal-sub { font-size: 0.72rem; color: var(--muted); margin-bottom: 16px; }
+.option-list { display: flex; flex-direction: column; gap: 8px; }
+.option-btn {
+  width: 100%; padding: 12px 14px;
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; color: var(--text);
+  font-family: 'Syne',sans-serif; font-weight: 700; font-size: 0.82rem;
+  cursor: pointer; text-align: left; transition: all 0.2s;
+  display: flex; align-items: center; gap: 10px;
+}
+.option-btn:active { transform: scale(0.98); }
+.option-btn.selected { border-color: var(--accent); color: var(--accent); }
+
+/* ── SESSION HISTORY ── */
+.history-session {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 12px; padding: 12px; margin-bottom: 8px;
+  cursor: pointer; transition: border-color 0.2s;
+}
+.history-session:hover { border-color: rgba(200,255,0,0.3); }
+.hs-header { display: flex; justify-content: space-between; align-items: center; }
+.hs-title { font-weight: 700; font-size: 0.85rem; }
+.hs-date { font-size: 0.65rem; color: var(--muted); font-family: 'JetBrains Mono',monospace; }
+.hs-meta { display: flex; gap: 12px; margin-top: 6px; }
+.hs-badge {
+  font-size: 0.65rem; font-family: 'JetBrains Mono',monospace;
+  color: var(--muted); display: flex; align-items: center; gap: 4px;
+}
+.hs-badge span { color: var(--accent2); font-weight: 600; }
+.hs-exercises { margin-top: 10px; display: none; }
+.hs-exercises.open { display: block; }
+.hs-ex-row {
+  padding: 6px 0; border-bottom: 1px solid var(--border);
+  font-size: 0.72rem;
+}
+.hs-ex-row:last-child { border-bottom: none; }
+.hs-ex-name { font-weight: 600; margin-bottom: 3px; }
+.hs-ex-sets { color: var(--muted); font-family: 'JetBrains Mono',monospace; font-size: 0.68rem; }
+
+/* ── MANUAL GARMIN FIELDS in save bar ── */
+.manual-fields {
+  display: flex; gap: 6px; padding: 8px 0 0;
+}
+.mf-group { flex: 1; }
+.mf-label { font-size: 0.58rem; text-transform: uppercase; color: var(--muted); letter-spacing: 1px; margin-bottom: 3px; }
+.mf-input {
+  width: 100%; background: var(--surface); border: 1px solid var(--border);
+  border-radius: 8px; color: var(--text); padding: 7px 8px;
+  font-family: 'JetBrains Mono',monospace; font-size: 0.9rem; text-align: center;
+  -moz-appearance: textfield;
+}
+.mf-input::-webkit-outer-spin-button, .mf-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+.mf-input:focus { outline: none; border-color: var(--accent); }
+
 /* ── GALAXY Z FOLD 6 COVER SCREEN (~360-390px) ── */
 @media screen and (max-width: 390px) {
   .app { max-width: 100%; padding-bottom: 72px; }
@@ -493,7 +577,7 @@ body {
   .stat-card { padding: 10px; }
   .stat-card .s-val { font-size: 1.6rem; }
   
-  .garmin-metrics { grid-template-columns: repeat(3, 1fr); gap: 4px; }
+  .wyze-metrics { grid-template-columns: repeat(3, 1fr); gap: 4px; }
   .g-metric { padding: 6px 3px; }
   .g-metric .gm-val { font-size: 1.1rem; }
   .g-metric .gm-label { font-size: 0.52rem; }
@@ -599,9 +683,21 @@ body {
       </div>
       <div id="session-exercises"></div>
     </div>
-    <div class="session-save-bar">
-      <button class="btn-secondary" onclick="closeSession()">Cancelar</button>
-      <button class="btn-primary" onclick="saveSession()">GUARDAR SESIÓN</button>
+    <div class="session-save-bar" style="flex-direction:column;gap:6px;">
+      <div class="manual-fields">
+        <div class="mf-group">
+          <div class="mf-label">⏱ Duración (min)</div>
+          <input type="number" class="mf-input" id="manual-duration" placeholder="52">
+        </div>
+        <div class="mf-group">
+          <div class="mf-label">🔥 Calorías</div>
+          <input type="number" class="mf-input" id="manual-calories" placeholder="332">
+        </div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn-secondary" onclick="closeSession()">Cancelar</button>
+        <button class="btn-primary" onclick="saveSession()">GUARDAR SESIÓN</button>
+      </div>
     </div>
   </div>
 
@@ -675,30 +771,47 @@ body {
       </div>
     </div>
 
-    <!-- Garmin import -->
-    <div class="garmin-card">
-      <div class="garmin-header">
-        <div class="garmin-logo">⌚</div>
+    <!-- Wyze Scale import -->
+    <div class="wyze-card">
+      <div class="wyze-header">
+        <div class="wyze-logo">⚖️</div>
         <div>
-          <div class="garmin-title">Datos Garmin</div>
-          <div class="garmin-subtitle">Última sync: <span id="garmin-last-sync">—</span></div>
+          <div class="wyze-title">Wyze Scale — Composición Corporal</div>
+          <div class="wyze-subtitle">Última importación: <span id="wyze-last-sync">—</span></div>
         </div>
       </div>
-      <div class="garmin-metrics" id="garmin-metrics">
-        <div class="g-metric"><div class="gm-val" id="g-steps">—</div><div class="gm-label">Pasos</div></div>
-        <div class="g-metric"><div class="gm-val" id="g-sleep">—</div><div class="gm-label">Sueño h</div></div>
-        <div class="g-metric"><div class="gm-val" id="g-stress">—</div><div class="gm-label">Estrés</div></div>
-        <div class="g-metric"><div class="gm-val" id="g-cal">—</div><div class="gm-label">Kcal</div></div>
-        <div class="g-metric"><div class="gm-val" id="g-hr">—</div><div class="gm-label">FC rep.</div></div>
-        <div class="g-metric"><div class="gm-val" id="g-hrv">—</div><div class="gm-label">HRV</div></div>
+      <div class="wyze-metrics">
+        <div class="w-metric warn"><div class="wm-val" id="w-fat">—</div><div class="wm-label">% Grasa</div></div>
+        <div class="w-metric highlight"><div class="wm-val" id="w-muscle">—</div><div class="wm-label">Masa Musc %</div></div>
+        <div class="w-metric"><div class="wm-val" id="w-bmi">—</div><div class="wm-label">IMC</div></div>
+        <div class="w-metric"><div class="wm-val" id="w-water">—</div><div class="wm-label">Agua %</div></div>
+        <div class="w-metric warn"><div class="wm-val" id="w-visceral">—</div><div class="wm-label">Grasa Visc</div></div>
+        <div class="w-metric"><div class="wm-val" id="w-bmr">—</div><div class="wm-label">TMB kcal</div></div>
       </div>
-      <div class="file-drop" onclick="document.getElementById('garmin-file').click()">
-        <input type="file" id="garmin-file" accept=".csv,.json,.fit" onchange="importGarmin(event)">
+      <div class="wyze-trend-grid">
+        <div class="wyze-trend-item">
+          <div class="wt-label">Peso actual</div>
+          <div class="wt-val" id="w-weight-trend">— kg</div>
+        </div>
+        <div class="wyze-trend-item">
+          <div class="wt-label">Cambio vs anterior</div>
+          <div class="wt-val" id="w-weight-delta">— kg</div>
+        </div>
+        <div class="wyze-trend-item">
+          <div class="wt-label">Masa muscular</div>
+          <div class="wt-val" id="w-muscle-kg">— lb</div>
+        </div>
+        <div class="wyze-trend-item">
+          <div class="wt-label">Grasa corporal</div>
+          <div class="wt-val" id="w-fat-lb">— lb</div>
+        </div>
+      </div>
+      <div class="file-drop" onclick="document.getElementById('wyze-file').click()" style="margin-top:10px;">
+        <input type="file" id="wyze-file" accept=".xlsx,.csv" onchange="importWyze(event)">
         <div class="fd-icon">📂</div>
-        <div style="font-size:0.78rem;color:var(--text);margin-top:4px;">Importar exportación Garmin Connect</div>
-        <p>CSV / JSON — Descárgalo desde Garmin Connect › Actividades › Exportar</p>
+        <div style="font-size:0.78rem;color:var(--text);margin-top:4px;">Importar exportación Wyze Scale</div>
+        <p>Archivo .xlsx — Wyze App › Perfil › Exportar datos</p>
       </div>
-      <button class="import-btn" onclick="loadDemoGarmin()">▶ Cargar datos de muestra</button>
     </div>
 
     <!-- Weight history -->
@@ -706,6 +819,12 @@ body {
       <div class="card-label">Historial de peso</div>
       <div class="weight-mini-chart" id="weight-chart-big" style="height:70px;"></div>
       <div id="weight-history-list" style="margin-top:12px;"></div>
+    </div>
+
+    <!-- Session history -->
+    <div class="card">
+      <div class="card-label">Historial de sesiones <span style="color:var(--muted);font-size:0.6rem;">Toca para ver detalles</span></div>
+      <div id="session-history-list"></div>
     </div>
 
     <!-- Exercise progress history -->
@@ -758,7 +877,7 @@ body {
 
     <!-- Schedule -->
     <div class="card">
-      <div class="card-label">Horario de esta semana</div>
+      <div class="card-label">Horario de esta semana <span style="color:var(--accent);font-size:0.6rem;cursor:pointer;" onclick="resetSchedule()">↺ Restaurar</span></div>
       <div class="setting-row" style="padding-bottom:6px;">
         <div>
           <div class="setting-label">Hora default de entreno</div>
@@ -801,6 +920,27 @@ body {
   </div>
 </div>
 
+
+<!-- DAY CONFIG MODAL -->
+<div class="modal-overlay" id="day-config-modal">
+  <div class="modal-box">
+    <div class="modal-title" id="modal-day-title">LUNES</div>
+    <div class="modal-sub">Selecciona el tipo de entrenamiento</div>
+    <div class="option-list" id="modal-options"></div>
+    <button class="btn-secondary" style="width:100%;margin-top:12px;" onclick="closeModal('day-config-modal')">Cancelar</button>
+  </div>
+</div>
+
+<!-- SESSION DETAIL MODAL -->
+<div class="modal-overlay" id="session-detail-modal">
+  <div class="modal-box" style="max-height:80vh;overflow-y:auto;border-radius:20px;">
+    <div class="modal-title" id="sd-title">SESIÓN</div>
+    <div class="modal-sub" id="sd-meta">—</div>
+    <div id="sd-body"></div>
+    <button class="btn-secondary" style="width:100%;margin-top:12px;" onclick="closeModal('session-detail-modal')">Cerrar</button>
+  </div>
+</div>
+
 <!-- TAB BAR -->
 <div class="tab-bar">
   <button class="tab-btn active" id="tab-home" onclick="switchTab('home')">
@@ -827,31 +967,48 @@ body {
 // ═══════════════════════════════════════════════════
 // DATA
 // ═══════════════════════════════════════════════════
-const SCHEDULE = {
-  0: { name: 'Dom', type: 'rest',    label: 'DESC',     class: '' },
-  1: { name: 'Lun', type: 'push',    label: 'TORSO 1',  class: 'push-day', workout: 'torso1', time: '07:00' },
-  2: { name: 'Mar', type: 'legs',    label: 'PIERNA 1', class: 'legs-day', workout: 'leg1',   time: '07:00' },
-  3: { name: 'Mié', type: 'pilates', label: 'PILATES',  class: 'pilates-day' },
-  4: { name: 'Jue', type: 'pull',    label: 'TORSO 2',  class: 'pull-day', workout: 'torso2', time: '07:00' },
-  5: { name: 'Vie', type: 'legs',    label: 'PIERNA 2', class: 'legs-day', workout: 'leg2',   time: '07:00' },
-  6: { name: 'Sáb', type: 'pilates', label: 'PILATES',  class: 'pilates-day' },
+// Default schedule — can be overridden by user via config
+const DEFAULT_SCHEDULE = {
+  0: { name: 'Dom', type: 'rest',    label: 'DESC',     class: '',           workout: null,    time: null },
+  1: { name: 'Lun', type: 'push',    label: 'TORSO 1',  class: 'push-day',   workout: 'torso1', time: '07:00' },
+  2: { name: 'Mar', type: 'legs',    label: 'PIERNA 1', class: 'legs-day',   workout: 'leg1',   time: '07:00' },
+  3: { name: 'Mié', type: 'pilates', label: 'PILATES',  class: 'pilates-day',workout: null,    time: null },
+  4: { name: 'Jue', type: 'pull',    label: 'TORSO 2',  class: 'pull-day',   workout: 'torso2', time: '07:00' },
+  5: { name: 'Vie', type: 'legs',    label: 'PIERNA 2', class: 'legs-day',   workout: 'leg2',   time: '07:00' },
+  6: { name: 'Sáb', type: 'pilates', label: 'PILATES',  class: 'pilates-day',workout: null,    time: null },
 };
+
+function getSCHEDULE() {
+  if (state.customSchedule) return state.customSchedule;
+  return DEFAULT_SCHEDULE;
+}
+
+const WORKOUT_OPTIONS = [
+  { key: 'torso1', label: 'TORSO 1 · EMPUJE',    type: 'push',    class: 'push-day',    color: 'var(--accent3)' },
+  { key: 'torso2', label: 'TORSO 2 · ESPALDA',   type: 'pull',    class: 'pull-day',    color: 'var(--accent2)' },
+  { key: 'leg1',   label: 'PIERNA 1 · CUÁDRIC',  type: 'legs',    class: 'legs-day',    color: 'var(--purple)' },
+  { key: 'leg2',   label: 'PIERNA 2 · POSTERIOR',type: 'legs',    class: 'legs-day',    color: 'var(--purple)' },
+  { key: null,     label: 'PILATES',              type: 'pilates', class: 'pilates-day', color: 'var(--pink)' },
+  { key: null,     label: 'DESCANSO',             type: 'rest',    class: '',            color: 'var(--muted)' },
+];
 
 const WORKOUTS = {
   torso1: {
     title: 'TORSO 1 · EMPUJE',
     color: 'accent3',
     tag: 'tag-push',
-    tagLabel: '🏋️ PECHO / HOMBRO / TRÍCEPS',
+    tagLabel: '🏋️ PECTORAL SUPERIOR · HOMBROS · TRÍCEPS',
     btnClass: 'push-btn',
-    meta: 'Hipertrofia y fuerza · RIR 1-2 en cada serie',
+    meta: 'Smart Fit Larcomar · RIR 1-2 · Descanso 90-120s compuestos / 60s aislamiento',
+    cardio: { desc: '🔥 20 min caminadora · inclinación 9-10% · 4.8 km/h', mins: 20 },
     exercises: [
-      { name: 'Press de Banca con Barra o Mancuernas', type: 'c', tip: 'Movimiento principal. Descanso 2 min entre series.', sets: 4, repsTarget: '8-10' },
-      { name: 'Remo con Barra o Máquina (Gironda/Sentado)', type: 'c', tip: 'Equilibra el empuje con jalón en el mismo día. Descanso 90 seg.', sets: 4, repsTarget: '10' },
-      { name: 'Press Inclinado con Mancuernas', type: 'c', tip: 'Banco 30-45°. Prioriza pectoral superior. Descanso 90 seg.', sets: 3, repsTarget: '10-12' },
-      { name: 'Jalón al Pecho en Polea (agarre prono)', type: 'c', tip: 'Complementa el trabajo de dorsal. Descanso 90 seg.', sets: 3, repsTarget: '12' },
-      { name: 'Elevaciones Laterales (mancuerna o polea)', type: 'i', tip: 'Sube hasta paralelo, codos ligeramente flexionados. Descanso 60 seg.', sets: 4, repsTarget: '12-15' },
-      { name: 'Extensiones de Tríceps en Polea Alta', type: 'i', tip: 'Codos fijos a costillas. Descanso 60 seg.', sets: 3, repsTarget: '12' },
+      { name: 'Press Inclinado con Mancuernas', type: 'c', tip: 'Banco a 30°. Baja controlado estirando fibras altas del pecho. Sube con potencia sin chocar mancuernas.', sets: 4, repsTarget: '8-10' },
+      { name: 'Press de Banca Plano (Barra o Hammer)', type: 'c', tip: 'Retracción escapular firme contra el banco para proteger hombros.', sets: 3, repsTarget: '10' },
+      { name: 'Aperturas Inclinadas en Polea Baja', type: 'i', tip: 'Poleas abajo. Junta manos a altura de barbilla en diagonal — aisla el canal superior del pecho.', sets: 3, repsTarget: '12-15' },
+      { name: 'Remo Sentado en Máquina (Low Row)', type: 'c', tip: 'Antagonista necesario para equilibrar la sesión de empuje.', sets: 4, repsTarget: '10' },
+      { name: 'Jalón al Pecho Polea Alta (Agarre Abierto)', type: 'c', tip: 'Agarre ancho. Jala los codos hacia los bolsillos. Excéntrica controlada.', sets: 3, repsTarget: '11-12' },
+      { name: 'Elevaciones Laterales con Mancuernas', type: 'i', tip: 'Sube hasta paralelo, codos ligeramente flexionados. Clave para cintura visual.', sets: 4, repsTarget: '12-15' },
+      { name: 'Extensiones de Tríceps con Cuerda Polea Alta', type: 'i', tip: 'Codos fijos a costillas. Abre las puntas al fondo.', sets: 3, repsTarget: '12-15' },
     ]
   },
   leg1: {
@@ -860,30 +1017,32 @@ const WORKOUTS = {
     tag: 'tag-legs',
     tagLabel: '🦵 CUÁDRICEPS + CORE',
     btnClass: 'legs-btn',
-    meta: 'Hipertrofia y fuerza · RIR 1-2 en cada serie',
+    meta: 'Smart Fit Larcomar · RIR 1-2 · Elevado gasto calórico',
+    cardio: null,
     exercises: [
-      { name: 'Sentadilla Libre con Barra o Smith', type: 'c', tip: 'Movimiento principal. Profundidad paralela. Descanso 2 min.', sets: 4, repsTarget: '8-10' },
-      { name: 'Prensa de Piernas', type: 'c', tip: 'Pies altos = glúteo, pies bajos = cuádriceps. Descanso 90 seg.', sets: 3, repsTarget: '10-12' },
-      { name: 'Extensión de Cuádriceps en Máquina', type: 'i', tip: 'Última serie con dropset. Sostener 1 seg arriba. Descanso 60 seg.', sets: 3, repsTarget: '12-15' },
-      { name: 'Curl de Pierna Sentado o Acostado', type: 'i', tip: 'Trabajo de isquios para balancear la rodilla. Descanso 90 seg.', sets: 4, repsTarget: '12' },
-      { name: 'Elevación de Talones de pie', type: 'i', tip: 'Pantorrillas. Contracción completa arriba. Descanso 60 seg.', sets: 4, repsTarget: '15' },
-      { name: 'Rueda Abdominal o Plancha Dinámica', type: 'i', tip: 'Core. Series al fallo controlado, sin perder técnica.', sets: 3, repsTarget: 'Al fallo' },
+      { name: 'Sentadilla Smith o Prensa 45°', type: 'c', tip: 'Baja profundo de manera controlada para máximo reclutamiento de cuádriceps.', sets: 4, repsTarget: '8-10' },
+      { name: 'Zancadas Estáticas con Mancuernas', type: 'c', tip: 'Rodilla delantera no pasa la punta del pie. Tronco erguido.', sets: 3, repsTarget: '10/pierna' },
+      { name: 'Extensión de Cuádriceps en Máquina', type: 'i', tip: 'Sostén 1 segundo arriba en cada repetición. Control total.', sets: 3, repsTarget: '12-15' },
+      { name: 'Curl de Pierna Acostado (Isquiotibiales)', type: 'i', tip: 'Excéntrica lenta (3-4 seg bajada) para mayor estímulo.', sets: 4, repsTarget: '12' },
+      { name: 'Elevación de Pantorrillas (Máquina o Prensa)', type: 'i', tip: 'Contracción completa arriba. Pausa 1 seg.', sets: 4, repsTarget: '15' },
+      { name: 'Abdominales en Banco Declinado', type: 'i', tip: 'Core. Movimiento controlado sin jalarse el cuello.', sets: 3, repsTarget: '15' },
     ]
   },
   torso2: {
-    title: 'TORSO 2 · JALÓN',
+    title: 'TORSO 2 · ESPALDA',
     color: 'accent2',
     tag: 'tag-pull',
-    tagLabel: '💪 ESPALDA / DELTOIDE POST. / BÍCEPS',
+    tagLabel: '💪 ESPALDA · BÍCEPS · POSTURA',
     btnClass: 'pull-btn',
-    meta: 'Hipertrofia y fuerza · RIR 1-2 en cada serie',
+    meta: 'Smart Fit Larcomar · RIR 1-2 · Densidad + corrección postural',
+    cardio: { desc: '🔥 20 min elíptica · ritmo moderado-alto', mins: 20 },
     exercises: [
-      { name: 'Dominadas (o Jalón al Pecho supino)', type: 'c', tip: 'Movimiento principal. Amplitud completa. Descanso 2 min.', sets: 4, repsTarget: '8-10' },
-      { name: 'Press Militar con Mancuernas', type: 'c', tip: 'Hombros. De pie o sentado, core activo. Descanso 90 seg.', sets: 3, repsTarget: '10' },
-      { name: 'Remo Unilateral con Mancuerna', type: 'c', tip: 'Corrige asimetrías. Jala hacia la cadera. Descanso 90 seg.', sets: 3, repsTarget: '10/lado' },
-      { name: 'Aperturas para Pecho (Pec Deck o Cruces)', type: 'i', tip: 'Aislamiento de pectoral, sostener la contracción. Descanso 60 seg.', sets: 3, repsTarget: '12-15' },
-      { name: 'Pájaros / Vuelos Posteriores', type: 'i', tip: 'Deltoide posterior — clave para postura. Descanso 60 seg.', sets: 4, repsTarget: '15' },
-      { name: 'Curl de Bíceps Barra Z o Mancuernas Inclinado', type: 'i', tip: 'Codos fijos, controla la negativa. Descanso 60 seg.', sets: 3, repsTarget: '12' },
+      { name: 'Jalón al Pecho Agarre Supino (Palmas hacia ti)', type: 'c', tip: 'Agarre supino activa más el bíceps y el dorsal bajo. Amplitud completa.', sets: 4, repsTarget: '8-10' },
+      { name: 'Press Militar Mancuernas (Sentado)', type: 'c', tip: 'Hombros. Core activo. No bloquees los codos arriba.', sets: 3, repsTarget: '10' },
+      { name: 'Remo Gironda (Polea Baja con Triángulo)', type: 'c', tip: 'Torso erguido sin balanceos. Junta omóplatos al jalar hacia abdomen bajo.', sets: 4, repsTarget: '11-12' },
+      { name: 'Aperturas en Máquina (Pec Deck Fly)', type: 'i', tip: 'Sostén contracción 1 seg. Aislamiento de pectoral.', sets: 3, repsTarget: '12-15' },
+      { name: 'Vuelos Posteriores en Máquina (Deltoides Post.)', type: 'i', tip: 'Clave para tirar hombros hacia atrás y mejorar postura erguida.', sets: 3, repsTarget: '15' },
+      { name: 'Curl de Bíceps Banco Scott o Barra Z', type: 'i', tip: 'Codos completamente fijos. Controla la negativa (bajada lenta).', sets: 3, repsTarget: '12' },
     ]
   },
   leg2: {
@@ -892,14 +1051,14 @@ const WORKOUTS = {
     tag: 'tag-legs',
     tagLabel: '🦵 CADENA POSTERIOR + CORE',
     btnClass: 'legs-btn',
-    meta: 'Hipertrofia y fuerza · RIR 1-2 en cada serie',
+    meta: 'Smart Fit Larcomar · RIR 1-2 · Isquiotibiales y glúteos',
+    cardio: null,
     exercises: [
-      { name: 'Peso Muerto Rumano', type: 'c', tip: 'Glúteo e isquiotibiales. Cadera atrás, espalda neutra. Descanso 2 min.', sets: 4, repsTarget: '8-10' },
-      { name: 'Zancadas Caminando con Mancuernas', type: 'c', tip: 'Unilateral, controla la rodilla delantera. Descanso 90 seg.', sets: 3, repsTarget: '12 pasos/lado' },
-      { name: 'Hip Thrust con Barra', type: 'c', tip: 'Activación máxima de glúteo. Pausa 1 seg arriba. Descanso 2 min.', sets: 3, repsTarget: '10-12' },
-      { name: 'Extensión de Cuádriceps en Máquina', type: 'i', tip: 'Balance con el trabajo anterior de cuádriceps. Descanso 60 seg.', sets: 3, repsTarget: '12' },
-      { name: 'Elevación de Talones Sentado', type: 'i', tip: 'Pantorrillas, ángulo distinto al día 1. Descanso 60 seg.', sets: 4, repsTarget: '12-15' },
-      { name: 'Elevación de Piernas Colgado o Crunch en Polea', type: 'i', tip: 'Core inferior. Controla el balanceo.', sets: 3, repsTarget: '15' },
+      { name: 'Peso Muerto Rumano (Barra o Mancuernas)', type: 'c', tip: 'Columna recta. Empuja cadera hacia atrás sintiendo estiramiento en isquiotibiales.', sets: 4, repsTarget: '8-10' },
+      { name: 'Hip Thrust (Máquina o Barra)', type: 'c', tip: 'Máxima activación de glúteo. Pausa 1 seg arriba apretando fuerte.', sets: 3, repsTarget: '10-12' },
+      { name: 'Curl de Pierna Sentado', type: 'i', tip: 'Ángulo de cadera distinto al acostado — mayor rango isquios.', sets: 3, repsTarget: '12' },
+      { name: 'Prensa de Piernas (Pies altos y separados)', type: 'c', tip: 'Pies altos y anchos = glúteo e isquios. Rango completo.', sets: 3, repsTarget: '12' },
+      { name: 'Elevación de Piernas (Torre o Silla Romana)', type: 'i', tip: 'Core inferior. Sin balanceo. Controla la bajada.', sets: 3, repsTarget: 'Al fallo' },
     ]
   }
 };
@@ -917,7 +1076,8 @@ if (!state.weights) state.weights = [
 if (!state.sessions) state.sessions = [];
 if (!state.notifEnabled) state.notifEnabled = false;
 if (!state.settings) state.settings = { preworkout:true, nolog:true, weekly:true };
-if (!state.garmin) state.garmin = null;
+if (!state.wyze) state.wyze = [];
+if (!state.wyzeLastSync) state.wyzeLastSync = null;
 
 let deferredPrompt = null;
 let timerInterval = null;
@@ -966,7 +1126,7 @@ function renderWeekStrip() {
   const today = new Date().getDay();
   const icons = { rest:'😴', pilates:'🧘', push:'🏋️', pull:'💪', legs:'🦵' };
   for (let d = 0; d < 7; d++) {
-    const s = SCHEDULE[d];
+    const s = getSCHEDULE()[d];
     const isToday = d === today;
     const isDone = state.sessions.some(ses => {
       const sesDate = new Date(ses.date);
@@ -991,7 +1151,7 @@ function getWeekEnd() { const d = getWeekStart(); d.setDate(d.getDate() + 6); d.
 function renderTodayBlock() {
   const block = document.getElementById('today-block');
   const today = new Date().getDay();
-  const sched = SCHEDULE[today];
+  const sched = getSCHEDULE()[today];
 
   if (sched.type === 'rest' || sched.type === 'pilates') {
     const icons = { rest: '😴', pilates: '🧘' };
@@ -1063,20 +1223,28 @@ function openSession(type) {
     container.appendChild(card);
   });
 
-  // Cardio block
-  const cardio = document.createElement('div');
-  cardio.className = 'cardio-block';
-  cardio.innerHTML = `
-    <div>
-      <div class="cardio-info">
-        <div class="ctitle">⚡ Cardio LISS</div>
-        <div class="csub">Caminadora inclinación 8-10 · 4.5-5 km/h<br>o elíptica estable</div>
+  // Cardio block (only for workouts that have cardio)
+  if (w.cardio) {
+    const cardio = document.createElement('div');
+    cardio.className = 'cardio-block';
+    const cardioMins = w.cardio.mins || 20;
+    const mm = String(cardioMins).padStart(2,'0');
+    cardio.innerHTML = `
+      <div>
+        <div class="cardio-info">
+          <div class="ctitle">⚡ Cardio LISS</div>
+          <div class="csub">${w.cardio.desc}</div>
+        </div>
       </div>
-    </div>
-    <div class="cardio-timer-display" id="cardio-timer" onclick="toggleCardioTimer()">22:00</div>`;
-  container.appendChild(cardio);
+      <div class="cardio-timer-display" id="cardio-timer" onclick="toggleCardioTimer()">${mm}:00</div>`;
+    timerSeconds = cardioMins * 60;
+    container.appendChild(cardio);
+  }
 
   document.getElementById('session-overlay').classList.add('open');
+  const md = document.getElementById('manual-duration'); if(md) md.value='';
+  const mc = document.getElementById('manual-calories'); if(mc) mc.value='';
+  timerSeconds = 0;
   document.querySelector('.tab-bar').style.display = 'none';
   document.body.style.overflow = 'hidden';
 }
@@ -1105,7 +1273,7 @@ function toggleCardioTimer() {
     document.getElementById('cardio-timer').style.color = 'var(--accent2)';
     return;
   }
-  if (timerSeconds === 0) timerSeconds = 22 * 60;
+  // timerSeconds already set by workout cardio config
   timerInterval = setInterval(() => {
     timerSeconds--;
     const m = Math.floor(timerSeconds / 60);
@@ -1154,11 +1322,16 @@ function saveSession() {
     return;
   }
 
+  const manualDur = document.getElementById('manual-duration');
+  const manualCal = document.getElementById('manual-calories');
+  const duration = (manualDur && manualDur.value) ? parseInt(manualDur.value) : Math.round((Date.now() - currentSession.startTime) / 60000);
+  const calories = (manualCal && manualCal.value) ? parseInt(manualCal.value) : null;
   const session = {
     date: new Date().toISOString(),
     type: currentSession.type,
     completed: true,
-    duration: Math.round((Date.now() - currentSession.startTime) / 60000),
+    duration,
+    calories,
     exercises: exerciseData,
     totalVolume: Math.round(totalVolume)
   };
@@ -1312,17 +1485,25 @@ function renderSchedGrid() {
   if (!grid) return;
   grid.innerHTML = '';
   for (let d = 0; d < 7; d++) {
-    const s = SCHEDULE[d];
+    const s = getSCHEDULE()[d];
     const today = new Date().getDay() === d;
     const div = document.createElement('div');
     div.className = `sched-day ${s.class} ${today ? 'active-day' : ''}`;
     div.innerHTML = `<div class="sd-name">${s.name}</div><div class="sd-type">${s.label}</div>`;
+    div.onclick = () => openDayConfig(d);
     if (s.time) {
       const input = document.createElement('input');
       input.type = 'time'; input.value = s.time;
       input.className = 'time-input';
       input.style.cssText = 'margin-top:6px;width:100%;font-size:0.65rem;padding:4px;';
-      input.addEventListener('change', e => { SCHEDULE[d].time = e.target.value; scheduleAllNotifications(); showToast('✓ Horario actualizado', 'info'); });
+      input.onclick = e => e.stopPropagation();
+      input.addEventListener('change', e => {
+        const sched = getSCHEDULE();
+        sched[d].time = e.target.value;
+        if (!state.customSchedule) state.customSchedule = JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
+        state.customSchedule[d].time = e.target.value;
+        saveState(); scheduleAllNotifications(); showToast('✓ Horario actualizado', 'info');
+      });
       div.appendChild(input);
     }
     grid.appendChild(div);
@@ -1332,6 +1513,129 @@ function renderSchedGrid() {
 // ═══════════════════════════════════════════════════
 // PROGRESS VIEW
 // ═══════════════════════════════════════════════════
+
+// ═══════════════════════════════════════════════════
+// DAY RECONFIGURATION
+// ═══════════════════════════════════════════════════
+let configDay = null;
+
+function openDayConfig(dayIndex) {
+  configDay = dayIndex;
+  const sched = getSCHEDULE();
+  const dayNames = ['Domingo','Lunes','Martes','Miércoles','Jueves','Viernes','Sábado'];
+  document.getElementById('modal-day-title').textContent = dayNames[dayIndex];
+  document.getElementById('modal-sub') && (document.querySelector('#day-config-modal .modal-sub').textContent = 'Selecciona el tipo de entrenamiento');
+
+  const list = document.getElementById('modal-options');
+  list.innerHTML = '';
+  WORKOUT_OPTIONS.forEach(opt => {
+    const btn = document.createElement('button');
+    btn.className = 'option-btn';
+    const current = sched[dayIndex];
+    const isSelected = current.type === opt.type && current.workout === opt.key;
+    if (isSelected) btn.classList.add('selected');
+    btn.innerHTML = `<span style="color:${opt.color};font-size:1rem;">●</span> ${opt.label}`;
+    btn.onclick = () => applyDayConfig(dayIndex, opt);
+    list.appendChild(btn);
+  });
+  document.getElementById('day-config-modal').classList.add('open');
+}
+
+function applyDayConfig(dayIndex, opt) {
+  if (!state.customSchedule) state.customSchedule = JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
+  const existing = state.customSchedule[dayIndex];
+  state.customSchedule[dayIndex] = {
+    ...existing,
+    type: opt.type,
+    label: opt.label,
+    class: opt.class,
+    workout: opt.key,
+    time: opt.key ? (existing.time || '07:00') : null
+  };
+  saveState();
+  closeModal('day-config-modal');
+  renderWeekStrip();
+  renderTodayBlock();
+  renderSchedGrid();
+  scheduleAllNotifications();
+  showToast('✓ Día actualizado', 'info');
+}
+
+function resetSchedule() {
+  if (!confirm('¿Restaurar el horario original?')) return;
+  state.customSchedule = null;
+  saveState();
+  renderWeekStrip();
+  renderTodayBlock();
+  renderSchedGrid();
+  showToast('✓ Horario restaurado', 'info');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+
+// ═══════════════════════════════════════════════════
+// SESSION HISTORY LIST
+// ═══════════════════════════════════════════════════
+function renderSessionHistoryList() {
+  const el = document.getElementById('session-history-list');
+  if (!el) return;
+  const sessions = [...state.sessions].reverse().slice(0, 20);
+  if (!sessions.length) {
+    el.innerHTML = '<div style="font-size:0.75rem;color:var(--muted);padding:8px 0;">Aún no hay sesiones registradas.</div>';
+    return;
+  }
+  const typeNames = { torso1:'Torso 1 · Empuje', torso2:'Torso 2 · Espalda', leg1:'Pierna 1 · Cuádriceps', leg2:'Pierna 2 · Posterior', pilates:'Pilates', rest:'Descanso' };
+  const typeColors = { torso1:'var(--accent3)', torso2:'var(--accent2)', leg1:'var(--purple)', leg2:'var(--purple)', pilates:'var(--pink)', rest:'var(--muted)' };
+  el.innerHTML = sessions.map((s, i) => {
+    const d = new Date(s.date);
+    const months = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+    const dateStr = `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+    const typeName = typeNames[s.type] || s.type;
+    const color = typeColors[s.type] || 'var(--muted)';
+    const vol = s.totalVolume ? `<span>${s.totalVolume.toLocaleString()} kg</span> vol` : '';
+    const dur = s.duration ? `<span>${s.duration}</span> min` : '';
+    const cal = s.calories ? `<span>${s.calories}</span> kcal` : '';
+    return `
+      <div class="history-session" onclick="toggleSessionDetail(${state.sessions.length - 1 - i}, this)">
+        <div class="hs-header">
+          <div class="hs-title" style="color:${color};">${typeName}</div>
+          <div class="hs-date">${dateStr}</div>
+        </div>
+        <div class="hs-meta">
+          ${dur ? `<div class="hs-badge">⏱ ${dur}</div>` : ''}
+          ${cal ? `<div class="hs-badge">🔥 ${cal}</div>` : ''}
+          ${vol ? `<div class="hs-badge">📦 ${vol}</div>` : ''}
+        </div>
+        <div class="hs-exercises" id="hs-detail-${state.sessions.length - 1 - i}"></div>
+      </div>`;
+  }).join('');
+}
+
+function toggleSessionDetail(sessionIndex, card) {
+  const s = state.sessions[sessionIndex];
+  const detailEl = card.querySelector('.hs-exercises');
+  if (!detailEl) return;
+  const isOpen = detailEl.classList.contains('open');
+  if (isOpen) { detailEl.classList.remove('open'); return; }
+
+  if (!s.exercises || !s.exercises.length) {
+    detailEl.innerHTML = '<div style="font-size:0.7rem;color:var(--muted);padding:6px 0;">Sin datos de ejercicios registrados.</div>';
+  } else {
+    detailEl.innerHTML = s.exercises.map(ex => {
+      const setsStr = ex.sets.filter(st => st.kg || st.reps)
+        .map((st,i) => `S${i+1}: ${st.kg||'—'}kg × ${st.reps||'—'}`)
+        .join('  ·  ');
+      return `<div class="hs-ex-row">
+        <div class="hs-ex-name">${ex.name}</div>
+        <div class="hs-ex-sets">${setsStr || 'Sin datos'}</div>
+      </div>`;
+    }).join('');
+  }
+  detailEl.classList.add('open');
+}
+
 function renderProgressView() {
   renderWeightChart('weight-chart-big');
   renderWeightHistory();
@@ -1342,7 +1646,8 @@ function renderProgressView() {
   }).length;
   const el = document.getElementById('pg-sessions');
   if (el) el.textContent = thisMonth;
-  if (state.garmin) renderGarminMetrics(state.garmin);
+  if (state.wyze && state.wyze.length) renderWyzeMetrics();
+  renderSessionHistoryList();
   renderExerciseHistoryCard();
 }
 
@@ -1382,57 +1687,146 @@ function renderExerciseHistoryCard() {
 }
 
 // ═══════════════════════════════════════════════════
-// GARMIN IMPORT
+// WYZE SCALE IMPORT
 // ═══════════════════════════════════════════════════
-function importGarmin(event) {
+function importWyze(event) {
   const file = event.target.files[0];
   if (!file) return;
   const reader = new FileReader();
   reader.onload = e => {
     try {
-      const text = e.target.result;
-      let data = {};
-      if (file.name.endsWith('.json')) {
-        const parsed = JSON.parse(text);
-        data.steps = parsed.steps || parsed.totalSteps || '—';
-        data.sleep = parsed.sleepDuration ? (parsed.sleepDuration/3600).toFixed(1) : '—';
-        data.stress = parsed.averageStressLevel || '—';
-        data.calories = parsed.activeKilocalories || parsed.totalKilocalories || '—';
-        data.hr = parsed.restingHeartRate || '—';
-        data.hrv = parsed.hrvWeeklyAverage || '—';
-      } else if (file.name.endsWith('.csv')) {
-        const lines = text.split('\n');
-        const header = lines[0].split(',').map(h => h.trim().toLowerCase());
-        const vals = lines[1] ? lines[1].split(',') : [];
-        const get = (key) => { const i = header.findIndex(h => h.includes(key)); return i >= 0 ? vals[i]?.trim() : '—'; };
-        data.steps = get('step'); data.sleep = get('sleep');
-        data.stress = get('stress'); data.calories = get('calori') || get('kcal');
-        data.hr = get('resting') || get('heart'); data.hrv = get('hrv');
-      }
-      data.lastSync = new Date().toLocaleDateString('es-MX');
-      state.garmin = data; saveState();
-      renderGarminMetrics(data);
-      showToast('✓ Datos Garmin importados', 'info');
-    } catch(err) { showToast('Error al leer el archivo'); }
+      // Parse XLSX using SheetJS via CDN (loaded below)
+      // Since we don't have SheetJS, we do a binary parse approach
+      // Wyze exports xlsx - we parse it with a lightweight approach
+      const data = e.target.result;
+      parseWyzeXLSX(data, file.name);
+    } catch(err) {
+      showToast('Error al leer el archivo Wyze');
+      console.error(err);
+    }
   };
-  reader.readAsText(file);
+  reader.readAsArrayBuffer(file);
 }
 
-function loadDemoGarmin() {
-  const data = { steps: '9,847', sleep: '7.2', stress: '32', calories: '2,340', hr: '52', hrv: '58', lastSync: new Date().toLocaleDateString('es-MX') };
-  state.garmin = data; saveState();
-  renderGarminMetrics(data);
-  showToast('✓ Datos de muestra cargados', 'info');
+function parseWyzeXLSX(arrayBuffer, filename) {
+  // Use SheetJS if available
+  if (typeof XLSX !== 'undefined') {
+    const wb = XLSX.read(arrayBuffer, { type: 'array' });
+    // Find Rodrigo's sheet (first one that is not Xime)
+    const sheetName = wb.SheetNames.find(n => !n.toLowerCase().includes('xime')) || wb.SheetNames[0];
+    const ws = wb.Sheets[sheetName];
+    const rows = XLSX.utils.sheet_to_json(ws, { defval: null });
+    processWyzeRows(rows);
+  } else {
+    showToast('Cargando librería XLSX, reintenta en 2 seg...', 'info');
+    loadSheetJS(() => parseWyzeXLSX(arrayBuffer, filename));
+  }
 }
 
-function renderGarminMetrics(data) {
-  document.getElementById('g-steps').textContent = data.steps || '—';
-  document.getElementById('g-sleep').textContent = data.sleep || '—';
-  document.getElementById('g-stress').textContent = data.stress || '—';
-  document.getElementById('g-cal').textContent = data.calories || '—';
-  document.getElementById('g-hr').textContent = data.hr || '—';
-  document.getElementById('g-hrv').textContent = data.hrv || '—';
-  if (data.lastSync) document.getElementById('garmin-last-sync').textContent = data.lastSync;
+function loadSheetJS(callback) {
+  if (typeof XLSX !== 'undefined') { callback(); return; }
+  const s = document.createElement('script');
+  s.src = 'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+  s.onload = callback;
+  document.head.appendChild(s);
+}
+
+function processWyzeRows(rows) {
+  // Skip the "Body Composition Data" header row if present
+  const dataRows = rows.filter(r => {
+    const dt = r['Date and Time'] || r['Date'] || '';
+    return dt && dt.toString().match(/\d{4}/);
+  });
+
+  if (!dataRows.length) { showToast('No se encontraron datos en el archivo'); return; }
+
+  // Parse and store all wyze measurements
+  const measurements = dataRows.map(r => {
+    const parseVal = v => {
+      if (!v || v === '- -' || v === '--') return null;
+      return parseFloat(v.toString().replace(/[^0-9.]/g, '')) || null;
+    };
+    const dateStr = (r['Date and Time'] || r['Date'] || '').toString();
+    return {
+      date: dateStr,
+      weightKg: parseVal(r['Weight(kg)']),
+      weightLb: parseVal(r['Weight(lb)']),
+      bmi: parseVal(r['BMI']),
+      bodyFat: parseVal(r['Body Fat']),
+      muscleMassLb: parseVal(r['Muscle Mass']),
+      muscleMassPct: parseVal(r['Muscle Mass %']),
+      bodyWater: parseVal(r['Body Water']),
+      leanBodyMassLb: parseVal(r['Lean Body Mass']),
+      boneMassLb: parseVal(r['Bone Mass']),
+      protein: parseVal(r['Protein']),
+      visceralFat: parseVal(r['Visceral Fat']),
+      bmr: parseVal(r['BMR']),
+      metabolicAge: parseVal(r['Metabolic Age']),
+      fatContentLb: parseVal(r['Fat Content']),
+    };
+  }).filter(m => m.weightKg);
+
+  // Remove duplicates - keep only one per date (best reading = has body fat data)
+  const byDate = {};
+  measurements.forEach(m => {
+    const dateKey = m.date.split(' ')[0];
+    if (!byDate[dateKey] || (m.bodyFat && !byDate[dateKey].bodyFat)) {
+      byDate[dateKey] = m;
+    }
+  });
+
+  const sorted = Object.values(byDate).sort((a, b) => b.date.localeCompare(a.date));
+
+  state.wyze = sorted;
+  state.wyzeLastSync = new Date().toLocaleDateString('es-MX', {day:'2-digit',month:'short',year:'numeric'});
+
+  // Sync weight history from Wyze
+  state.weights = sorted.map(m => ({
+    date: m.date.split(' ')[0].replace(/\./g, '-').replace(/(\d{4})-(\d{2})-(\d{2})/, '$1-$2-$3'),
+    val: m.weightKg
+  }));
+
+  saveState();
+  renderWyzeMetrics();
+  renderWeightChart('weight-chart');
+  renderWeightChart('weight-chart-big');
+  updateWeightDisplay();
+  renderWeightHistory();
+  showToast('✓ ' + sorted.length + ' mediciones Wyze importadas', 'info');
+}
+
+function renderWyzeMetrics() {
+  if (!state.wyze || !state.wyze.length) return;
+  const latest = state.wyze[0];
+  const prev = state.wyze[1];
+
+  const set = (id, val, unit='') => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val !== null ? val + unit : '—';
+  };
+
+  set('w-fat', latest.bodyFat, '%');
+  set('w-muscle', latest.muscleMassPct, '%');
+  set('w-bmi', latest.bmi, '');
+  set('w-water', latest.bodyWater, '%');
+  set('w-visceral', latest.visceralFat, '');
+  set('w-bmr', latest.bmr, '');
+  set('w-weight-trend', latest.weightKg ? latest.weightKg.toFixed(1) + ' kg' : '—');
+  set('w-muscle-kg', latest.muscleMassLb ? latest.muscleMassLb.toFixed(1) + ' lb' : '—');
+  set('w-fat-lb', latest.fatContentLb ? latest.fatContentLb.toFixed(1) + ' lb' : '—');
+
+  if (prev && prev.weightKg && latest.weightKg) {
+    const delta = (latest.weightKg - prev.weightKg).toFixed(1);
+    const sign = delta > 0 ? '+' : '';
+    const el = document.getElementById('w-weight-delta');
+    if (el) {
+      el.textContent = sign + delta + ' kg';
+      el.style.color = delta < 0 ? 'var(--success)' : delta > 0 ? 'var(--danger)' : 'var(--muted)';
+    }
+  }
+
+  const syncEl = document.getElementById('wyze-last-sync');
+  if (syncEl && state.wyzeLastSync) syncEl.textContent = state.wyzeLastSync;
 }
 
 // ═══════════════════════════════════════════════════
@@ -1479,8 +1873,9 @@ function scheduleAllNotifications() {
   const now = new Date();
 
   // Pre-workout: 30 min before each gym day this week
-  [1,2,4,5].forEach(dayOfWeek => {
-    const sched = SCHEDULE[dayOfWeek];
+  [1,2,3,4,5,6].forEach(dayOfWeek => {
+    const sched = getSCHEDULE()[dayOfWeek];
+    if (!sched.workout) return;
     if (!sched.time) return;
     if (!state.settings.preworkout) return;
     const [h, m] = sched.time.split(':').map(Number);
@@ -1489,7 +1884,8 @@ function scheduleAllNotifications() {
     target.setHours(h, m - 30, 0, 0);
     const ms = target - now;
     if (ms > 0 && ms < 7 * 24 * 60 * 60 * 1000) {
-      const labels = { 1:'Torso 1 - Empuje', 2:'Pierna 1 - Cuádriceps', 4:'Torso 2 - Jalón', 5:'Pierna 2 - Cadena Posterior' };
+      const sched = getSCHEDULE();
+      const labels = { 1: sched[1].label, 2: sched[2].label, 4: sched[4].label, 5: sched[5].label };
       const t = setTimeout(() => {
         new Notification(`⏰ Entreno en 30 min`, { body: `${labels[dayOfWeek]} — Prepara tu ropa, hidratación y concentración. ¡Tú puedes, Rodrigo!` });
       }, ms);
@@ -1580,6 +1976,7 @@ function showToast(msg, type='') {
 // ═══════════════════════════════════════════════════
 renderWeightChart('weight-chart');
 updateWeightDisplay();
+if (state.wyze && state.wyze.length) renderWyzeMetrics();
 </script>
 </body>
 </html>
