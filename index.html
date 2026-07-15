@@ -13,25 +13,27 @@
 
 <style>
 :root {
-  --bg: #0d0d14;
-  --surface: #13131e;
-  --card: #1a1a28;
-  --border: #262638;
-  --accent: #c8ff00;
-  --accent2: #00ffc8;
-  --accent3: #ff6b35;
-  --purple: #a855f7;
-  --pink: #ec4899;
-  --text: #eeeeff;
-  --muted: #6060a0;
-  --danger: #ff4757;
-  --success: #00ffc8;
+  --bg: #101014;
+  --surface: #16161c;
+  --card: #1d1d25;
+  --border: #2e2e3a;
+  --accent: #d6b25e;
+  --accent2: #7fb8a4;
+  --accent3: #c97b5e;
+  --purple: #8e7cc3;
+  --pink: #b07a95;
+  --text: #f4f4f6;
+  --muted: #a3a3b8;
+  --danger: #d9776b;
+  --success: #7fb8a4;
 }
 
 * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
 
+html { overflow-x: hidden; }
 body {
   background: var(--bg);
+  max-width: 100vw;
   color: var(--text);
   font-family: 'Syne', sans-serif;
   min-height: 100vh;
@@ -42,14 +44,14 @@ body {
 .bg-grid {
   position: fixed; inset: 0; z-index: 0;
   background-image:
-    linear-gradient(rgba(200,255,0,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(200,255,0,0.03) 1px, transparent 1px);
+    linear-gradient(rgba(214,178,94,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(214,178,94,0.025) 1px, transparent 1px);
   background-size: 40px 40px;
   pointer-events: none;
 }
 .bg-glow {
   position: fixed; width: 600px; height: 600px;
-  background: radial-gradient(circle, rgba(200,255,0,0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(214,178,94,0.05) 0%, transparent 70%);
   top: -200px; right: -200px; z-index: 0; pointer-events: none;
   animation: glowDrift 8s ease-in-out infinite alternate;
 }
@@ -76,7 +78,7 @@ body {
 }
 .tab-btn svg { width: 18px; height: 18px; stroke-width: 1.5; }
 .tab-btn.active { color: var(--accent); }
-.tab-btn.active svg { filter: drop-shadow(0 0 6px var(--accent)); }
+.tab-btn.active svg { filter: none; }
 
 /* ── VIEWS ── */
 .view { display: none; padding: 0 10px; animation: fadeUp 0.3s ease; }
@@ -93,7 +95,7 @@ body {
   font-family: 'Bebas Neue', sans-serif;
   font-size: 2.2rem; line-height: 1;
   color: var(--accent);
-  text-shadow: 0 0 30px rgba(200,255,0,0.4);
+  text-shadow: none;
   letter-spacing: 2px;
 }
 .page-header .sub { font-size: 0.7rem; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 4px; }
@@ -139,11 +141,11 @@ body {
   text-transform: uppercase; padding: 3px 8px;
   border-radius: 20px; margin-bottom: 10px;
 }
-.tag-pull { background: rgba(0,255,200,0.12); color: var(--accent2); }
-.tag-push { background: rgba(255,107,53,0.12); color: var(--accent3); }
-.tag-legs { background: rgba(168,85,247,0.12); color: var(--purple); }
+.tag-pull { background: rgba(127,184,164,0.1); color: var(--accent2); }
+.tag-push { background: rgba(201,123,94,0.12); color: var(--accent3); }
+.tag-legs { background: rgba(142,124,195,0.12); color: var(--purple); }
 .tag-rest { background: rgba(96,96,160,0.12); color: var(--muted); }
-.tag-pilates { background: rgba(236,72,153,0.12); color: var(--pink); }
+.tag-pilates { background: rgba(176,122,149,0.12); color: var(--pink); }
 
 .workout-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.5rem; letter-spacing: 1px; margin-bottom: 4px; }
 .workout-meta { font-size: 0.75rem; color: var(--muted); }
@@ -152,7 +154,7 @@ body {
   width: 100%; margin-top: 10px; padding: 11px;
   background: var(--accent); border: none; border-radius: 12px;
   font-family: 'Bebas Neue', sans-serif; font-size: 1rem;
-  letter-spacing: 1px; color: #0d0d14; cursor: pointer;
+  letter-spacing: 1px; color: #14140f; cursor: pointer;
   transition: all 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px;
 }
 .start-btn:active { transform: scale(0.98); }
@@ -172,13 +174,13 @@ body {
 .week-day .wd-icon { font-size: 0.9rem; margin: 2px 0; }
 .week-day .wd-type { font-family: 'Bebas Neue', sans-serif; font-size: 0.75rem; line-height: 1; }
 .week-day.today { border-color: var(--accent); color: var(--accent); }
-.week-day.done { border-color: rgba(0,255,200,0.4); }
+.week-day.done { border-color: rgba(127,184,164,0.3); }
 .week-day.done .wd-icon::after { content: '✓'; font-size: 0.7rem; }
 
 /* ── NOTIFICATION BANNER ── */
 .notif-banner {
-  background: linear-gradient(135deg, rgba(200,255,0,0.1) 0%, rgba(200,255,0,0.03) 100%);
-  border: 1px solid rgba(200,255,0,0.3);
+  background: linear-gradient(135deg, rgba(214,178,94,0.09) 0%, rgba(214,178,94,0.025) 100%);
+  border: 1px solid rgba(214,178,94,0.25);
   border-radius: 12px; padding: 10px 12px; margin-bottom: 10px;
   display: flex; align-items: center; gap: 10px; cursor: pointer;
 }
@@ -222,7 +224,7 @@ body {
   border-radius: 12px; padding: 10px; margin-bottom: 8px;
   transition: border-color 0.3s;
 }
-.ex-card.done-card { border-color: rgba(0,255,200,0.35); }
+.ex-card.done-card { border-color: rgba(127,184,164,0.3); }
 .ex-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px; }
 .ex-num { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: var(--muted); margin-right: 6px; }
 .ex-name { font-size: 0.82rem; font-weight: 700; flex: 1; }
@@ -230,8 +232,8 @@ body {
   font-size: 0.6rem; padding: 2px 7px; border-radius: 20px;
   font-family: 'JetBrains Mono', monospace;
 }
-.badge-c { background: rgba(255,107,53,0.12); color: var(--accent3); border: 1px solid rgba(255,107,53,0.3); }
-.badge-i { background: rgba(0,255,200,0.1); color: var(--accent2); border: 1px solid rgba(0,255,200,0.3); }
+.badge-c { background: rgba(201,123,94,0.12); color: var(--accent3); border: 1px solid rgba(201,123,94,0.3); }
+.badge-i { background: rgba(127,184,164,0.08); color: var(--accent2); border: 1px solid rgba(127,184,164,0.25); }
 .ex-tip {
   font-size: 0.72rem; color: var(--muted); margin-bottom: 10px;
   padding: 6px 10px; background: rgba(255,255,255,0.03);
@@ -240,7 +242,7 @@ body {
 .ex-last {
   font-size: 0.7rem; color: var(--accent); margin-bottom: 8px;
   font-family: 'JetBrains Mono', monospace;
-  padding: 5px 10px; background: rgba(200,255,0,0.06);
+  padding: 5px 10px; background: rgba(214,178,94,0.05);
   border-radius: 8px; border-left: 2px solid var(--accent);
 }
 .sets-header {
@@ -270,11 +272,11 @@ body {
   display: flex; align-items: center; justify-content: center;
   font-size: 0.7rem; color: transparent;
 }
-.set-check.done-check { background: var(--accent2); border-color: var(--accent2); color: #0d0d14; }
+.set-check.done-check { background: var(--accent2); border-color: var(--accent2); color: #14140f; }
 
 .cardio-block {
-  background: linear-gradient(135deg, rgba(0,255,200,0.06) 0%, var(--card) 100%);
-  border: 1px solid rgba(0,255,200,0.2);
+  background: linear-gradient(135deg, rgba(127,184,164,0.05) 0%, var(--card) 100%);
+  border: 1px solid rgba(127,184,164,0.16);
   border-radius: 14px; padding: 16px; margin-top: 8px;
   display: flex; justify-content: space-between; align-items: center;
 }
@@ -283,7 +285,7 @@ body {
 .cardio-timer-display {
   font-family: 'Bebas Neue', sans-serif; font-size: 2.5rem;
   color: var(--accent2); cursor: pointer; letter-spacing: 2px;
-  text-shadow: 0 0 20px rgba(0,255,200,0.4);
+  text-shadow: none;
 }
 
 .session-save-bar {
@@ -297,7 +299,7 @@ body {
 .btn-primary {
   flex: 1; padding: 13px; background: var(--accent); border: none;
   border-radius: 12px; font-family: 'Bebas Neue', sans-serif;
-  font-size: 1rem; letter-spacing: 2px; color: #0d0d14;
+  font-size: 1rem; letter-spacing: 2px; color: #14140f;
   cursor: pointer; transition: all 0.2s;
 }
 .btn-primary:active { transform: scale(0.98); }
@@ -362,7 +364,7 @@ body {
   background: var(--muted); border-radius: 50%; top: 3px; left: 3px;
   transition: all 0.2s;
 }
-.toggle.on { background: rgba(200,255,0,0.3); }
+.toggle.on { background: rgba(214,178,94,0.25); }
 .toggle.on::after { background: var(--accent); left: 23px; }
 
 .time-input {
@@ -373,16 +375,18 @@ body {
 }
 .time-input:focus { outline: none; border-color: var(--accent); }
 
-.sched-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; margin-top: 10px; }
+.sched-grid { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
 .sched-day {
-  border-radius: 10px; padding: 8px 4px; text-align: center;
-  font-size: 0.58rem; text-transform: uppercase; cursor: pointer;
+  border-radius: 10px; padding: 10px 12px;
+  font-size: 0.62rem; text-transform: uppercase; cursor: pointer;
   transition: all 0.2s; border: 1px solid var(--border);
   background: var(--card); color: var(--muted);
+  display: flex; align-items: center; justify-content: space-between; gap: 8px;
 }
-.sched-day .sd-name { margin-bottom: 3px; }
-.sched-day .sd-type { font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; line-height: 1; }
-.sched-day.active-day { border-color: var(--accent); color: var(--accent); background: rgba(200,255,0,0.06); }
+.sched-day .sd-name { min-width: 34px; font-weight: 700; }
+.sched-day .sd-type { font-family: 'Bebas Neue', sans-serif; font-size: 0.95rem; line-height: 1; flex: 1; text-align: left; }
+.sched-day .time-input { margin: 0 !important; width: 92px !important; }
+.sched-day.active-day { border-color: var(--accent); color: var(--accent); background: rgba(214,178,94,0.05); }
 .sched-day.pull-day { border-color: var(--accent2); color: var(--accent2); }
 .sched-day.push-day { border-color: var(--accent3); color: var(--accent3); }
 .sched-day.legs-day { border-color: var(--purple); color: var(--purple); }
@@ -391,8 +395,8 @@ body {
 
 /* ── WYZE SCALE ── */
 .wyze-card {
-  background: linear-gradient(135deg, rgba(200,255,0,0.06) 0%, var(--card) 100%);
-  border: 1px solid rgba(200,255,0,0.2); border-radius: 16px; padding: 14px; margin-bottom: 12px;
+  background: linear-gradient(135deg, rgba(214,178,94,0.05) 0%, var(--card) 100%);
+  border: 1px solid rgba(214,178,94,0.18); border-radius: 16px; padding: 14px; margin-bottom: 12px;
 }
 .wyze-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
 .wyze-logo { font-size: 1.4rem; }
@@ -408,12 +412,12 @@ body {
 .w-metric.warn .wm-val { color: var(--accent3); }
 .wyze-import-btn {
   width: 100%; padding: 10px;
-  background: rgba(200,255,0,0.08); border: 1px solid rgba(200,255,0,0.25);
+  background: rgba(214,178,94,0.07); border: 1px solid rgba(214,178,94,0.2);
   border-radius: 10px; color: var(--accent);
   font-family: 'Syne', sans-serif; font-weight: 700; font-size: 0.78rem;
   cursor: pointer; transition: all 0.2s;
 }
-.wyze-import-btn:hover { background: rgba(200,255,0,0.15); }
+.wyze-import-btn:hover { background: rgba(214,178,94,0.12); }
 .wyze-trend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 8px; }
 .wyze-trend-item {
   background: rgba(0,0,0,0.2); border-radius: 8px; padding: 8px;
@@ -436,15 +440,15 @@ body {
 .w-btn {
   padding: 10px 16px; background: var(--accent); border: none;
   border-radius: 10px; font-family: 'Bebas Neue', sans-serif;
-  font-size: 1rem; letter-spacing: 1px; color: #0d0d14; cursor: pointer;
+  font-size: 1rem; letter-spacing: 1px; color: #14140f; cursor: pointer;
 }
 .big-weight {
   font-family: 'Bebas Neue', sans-serif; font-size: 3rem;
   color: var(--accent); line-height: 1;
-  text-shadow: 0 0 30px rgba(200,255,0,0.3);
+  text-shadow: none;
 }
 .weight-mini-chart { display: flex; align-items: flex-end; gap: 4px; height: 50px; margin-top: 12px; }
-.wbar { flex: 1; background: linear-gradient(to top, rgba(200,255,0,0.5), rgba(200,255,0,0.15)); border-radius: 3px 3px 0 0; min-width: 6px; cursor: pointer; position: relative; transition: opacity 0.2s; }
+.wbar { flex: 1; background: linear-gradient(to top, rgba(214,178,94,0.4), rgba(214,178,94,0.12)); border-radius: 3px 3px 0 0; min-width: 6px; cursor: pointer; position: relative; transition: opacity 0.2s; }
 .wbar:hover { opacity: 0.7; }
 .wbar-label { position: absolute; bottom: 105%; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; padding: 1px 5px; border-radius: 4px; font-size: 0.6rem; white-space: nowrap; opacity: 0; transition: opacity 0.2s; }
 .wbar:hover .wbar-label { opacity: 1; }
@@ -452,13 +456,13 @@ body {
 /* ── TOAST ── */
 .toast {
   position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(10px);
-  background: var(--accent); color: #0d0d14; padding: 10px 20px;
+  background: var(--accent); color: #14140f; padding: 10px 20px;
   border-radius: 12px; font-weight: 700; font-size: 0.85rem;
   opacity: 0; transition: all 0.3s; z-index: 300; white-space: nowrap;
-  box-shadow: 0 4px 20px rgba(200,255,0,0.3);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.4);
 }
 .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-.toast.info { background: var(--accent2); box-shadow: 0 4px 20px rgba(0,255,200,0.3); }
+.toast.info { background: var(--accent2); box-shadow: 0 4px 16px rgba(0,0,0,0.4); }
 
 /* ── FILE INPUT ── */
 .file-drop {
@@ -471,6 +475,17 @@ body {
 .file-drop .fd-icon { font-size: 2rem; }
 
 
+
+
+/* ── PESO CORPORAL TOGGLE ── */
+.bw-toggle {
+  font-size: 0.6rem; padding: 3px 8px; border-radius: 20px;
+  background: transparent; border: 1px solid var(--border);
+  color: var(--muted); cursor: pointer; font-family: 'JetBrains Mono',monospace;
+  transition: all 0.2s; margin-left: 6px;
+}
+.bw-toggle.on { border-color: var(--accent); color: var(--accent); background: rgba(214,178,94,0.08); }
+.set-input:disabled { opacity: 0.45; }
 
 /* ── DAY CONFIG MODAL ── */
 .modal-overlay {
@@ -507,7 +522,7 @@ body {
   border-radius: 12px; padding: 12px; margin-bottom: 8px;
   cursor: pointer; transition: border-color 0.2s;
 }
-.history-session:hover { border-color: rgba(200,255,0,0.3); }
+.history-session:hover { border-color: rgba(214,178,94,0.25); }
 .hs-header { display: flex; justify-content: space-between; align-items: center; }
 .hs-title { font-weight: 700; font-size: 0.85rem; }
 .hs-date { font-size: 0.65rem; color: var(--muted); font-family: 'JetBrains Mono',monospace; }
@@ -589,8 +604,8 @@ body {
   .setting-sub { font-size: 0.62rem; }
   .time-input { width: 80px; font-size: 0.75rem; padding: 5px 6px; }
   
-  .sched-day { padding: 6px 2px; border-radius: 7px; }
-  .sched-day .sd-type { font-size: 0.72rem; }
+  .sched-day { padding: 8px 10px; }
+  .sched-day .sd-type { font-size: 0.85rem; }
   
   .tab-btn { font-size: 0.5rem; padding: 2px 0; }
   .tab-btn svg { width: 17px; height: 17px; }
@@ -1043,7 +1058,7 @@ const WORKOUTS = {
       { name: 'Extensión de Cuádriceps en Máquina', type: 'i', tip: 'Sostén 1 segundo arriba en cada repetición. Control total.', sets: 3, repsTarget: '12-15' },
       { name: 'Curl de Pierna Acostado (Isquiotibiales)', type: 'i', tip: 'Excéntrica lenta (3-4 seg bajada) para mayor estímulo.', sets: 4, repsTarget: '12' },
       { name: 'Elevación de Pantorrillas (Máquina o Prensa)', type: 'i', tip: 'Contracción completa arriba. Pausa 1 seg.', sets: 4, repsTarget: '15' },
-      { name: 'Abdominales en Banco Declinado', type: 'i', tip: 'Core. Movimiento controlado sin jalarse el cuello.', sets: 3, repsTarget: '15' },
+      { name: 'Abdominales en Banco Declinado', type: 'i', tip: 'Core. Movimiento controlado sin jalarse el cuello.', sets: 3, repsTarget: '15', bw: true },
     ]
   },
   torso2: {
@@ -1076,7 +1091,7 @@ const WORKOUTS = {
       { name: 'Hip Thrust (Máquina o Barra)', type: 'c', tip: 'Máxima activación de glúteo. Pausa 1 seg arriba apretando fuerte.', sets: 3, repsTarget: '10-12' },
       { name: 'Curl de Pierna Sentado', type: 'i', tip: 'Ángulo de cadera distinto al acostado — mayor rango isquios.', sets: 3, repsTarget: '12' },
       { name: 'Prensa de Piernas (Pies altos y separados)', type: 'c', tip: 'Pies altos y anchos = glúteo e isquios. Rango completo.', sets: 3, repsTarget: '12' },
-      { name: 'Elevación de Piernas (Torre o Silla Romana)', type: 'i', tip: 'Core inferior. Sin balanceo. Controla la bajada.', sets: 3, repsTarget: 'Al fallo' },
+      { name: 'Elevación de Piernas (Torre o Silla Romana)', type: 'i', tip: 'Core inferior. Sin balanceo. Controla la bajada.', sets: 3, repsTarget: 'Al fallo', bw: true },
     ]
   }
 };
@@ -1211,7 +1226,7 @@ function openSession(type) {
     const lastEntry = getLastExercise(type, ei);
     let lastHTML = '';
     if (lastEntry) {
-      const lastSetsTxt = lastEntry.sets.map(s => `${s.kg||'-'}kg×${s.reps||'-'}`).join(' · ');
+      const lastSetsTxt = lastEntry.sets.map(s => `${s.bw?'PC':(s.kg||'-')+'kg'}×${s.reps||'-'}`).join(' · ');
       lastHTML = `<div class="ex-last">📅 ${formatShortDate(lastEntry.date)} — ${lastSetsTxt}</div>`;
     }
     let setsHTML = `<div class="sets-header"><span>#</span><span>KG</span><span>REPS</span><span></span></div>`;
@@ -1229,10 +1244,11 @@ function openSession(type) {
     }
     card.innerHTML = `
       <div class="ex-top">
-        <div style="display:flex;align-items:center;">
+        <div style="display:flex;align-items:center;flex:1;">
           <span class="ex-num">${String(ei+1).padStart(2,'0')}</span>
           <span class="ex-name">${ex.name}</span>
         </div>
+        <button class="bw-toggle ${ex.bw?'on':''}" id="bw-${ei}" onclick="toggleBW(${ei})">🧍 PC</button>
         <span class="ex-badge ${ex.type==='c'?'badge-c':'badge-i'}">${ex.type==='c'?'Compuesto':'Aislamiento'}</span>
       </div>
       <div class="ex-tip">${ex.tip}</div>
@@ -1240,6 +1256,9 @@ function openSession(type) {
       <div class="sets-grid">${setsHTML}</div>`;
     container.appendChild(card);
   });
+
+  // Apply initial BW state (disable kg inputs on bodyweight exercises)
+  w.exercises.forEach((ex, ei) => { if (ex.bw) setBWState(ei, true, ex.sets); });
 
   // Cardio block (only for workouts that have cardio)
   if (w.cardio) {
@@ -1316,22 +1335,55 @@ function closeSession() {
   if (timerInterval) { clearInterval(timerInterval); timerInterval = null; timerSeconds = 0; }
 }
 
+
+// ═══════════════════════════════════════════════════
+// PESO CORPORAL (BODYWEIGHT)
+// ═══════════════════════════════════════════════════
+function getCurrentBodyWeight() {
+  if (state.weights && state.weights.length) return state.weights[0].val;
+  return 83; // fallback
+}
+
+function setBWState(ei, isOn, numSets) {
+  const btn = document.getElementById(`bw-${ei}`);
+  if (btn) btn.classList.toggle('on', isOn);
+  if (!currentSession.bwFlags) currentSession.bwFlags = {};
+  currentSession.bwFlags[ei] = isOn;
+  const bwVal = getCurrentBodyWeight();
+  for (let s = 0; s < numSets; s++) {
+    const kgEl = document.getElementById(`kg-${ei}-${s}`);
+    if (!kgEl) continue;
+    kgEl.disabled = isOn;
+    kgEl.placeholder = isOn ? `PC ${bwVal}` : '—';
+    if (isOn) kgEl.value = '';
+  }
+}
+
+function toggleBW(ei) {
+  const w = WORKOUTS[currentSession.type];
+  const isOn = !(currentSession.bwFlags && currentSession.bwFlags[ei]);
+  setBWState(ei, isOn, w.exercises[ei].sets);
+}
+
 function saveSession() {
   const w = WORKOUTS[currentSession.type];
   const exerciseData = [];
   let totalVolume = 0;
 
   w.exercises.forEach((ex, ei) => {
+    const isBW = currentSession.bwFlags && currentSession.bwFlags[ei];
+    const bwVal = getCurrentBodyWeight();
     const sets = [];
     for (let s = 0; s < ex.sets; s++) {
       const kgEl = document.getElementById(`kg-${ei}-${s}`);
       const repsEl = document.getElementById(`reps-${ei}-${s}`);
-      const kg = kgEl && kgEl.value ? parseFloat(kgEl.value) : null;
+      let kg = kgEl && kgEl.value ? parseFloat(kgEl.value) : null;
       const reps = repsEl && repsEl.value ? parseInt(repsEl.value) : null;
+      if (isBW && reps !== null) kg = bwVal;
       if (kg !== null && reps !== null) totalVolume += kg * reps;
-      sets.push({ kg, reps });
+      sets.push({ kg, reps, bw: isBW || undefined });
     }
-    exerciseData.push({ name: ex.name, sets });
+    exerciseData.push({ name: ex.name, sets, bw: isBW || undefined });
   });
 
   const hasAnyData = exerciseData.some(e => e.sets.some(s => s.kg !== null || s.reps !== null));
@@ -1488,7 +1540,7 @@ function renderRoutinesList() {
             <div style="font-size:0.68rem;color:var(--muted);margin-top:2px;">${ex.tip}</div>
           </div>
         </div>`).join('')}
-      <div style="margin-top:10px;padding:10px;background:rgba(0,255,200,0.05);border-radius:10px;border:1px solid rgba(0,255,200,0.15);">
+      <div style="margin-top:10px;padding:10px;background:rgba(127,184,164,0.05);border-radius:10px;border:1px solid rgba(127,184,164,0.12);">
         <span style="font-size:0.72rem;color:var(--accent2);">⚡ Cardio post-fuerza: 20-25 min LISS · caminadora incl.8-10 a 4.5-5 km/h</span>
       </div>`;
     el.appendChild(card);
@@ -1513,7 +1565,7 @@ function renderSchedGrid() {
       const input = document.createElement('input');
       input.type = 'time'; input.value = s.time;
       input.className = 'time-input';
-      input.style.cssText = 'margin-top:6px;width:100%;font-size:0.65rem;padding:4px;';
+      input.style.cssText = 'font-size:0.68rem;padding:5px;';
       input.onclick = e => e.stopPropagation();
       input.addEventListener('change', e => {
         const sched = getSCHEDULE();
@@ -1643,7 +1695,7 @@ function toggleSessionDetail(sessionIndex, card) {
   } else {
     detailEl.innerHTML = s.exercises.map(ex => {
       const setsStr = ex.sets.filter(st => st.kg || st.reps)
-        .map((st,i) => `S${i+1}: ${st.kg||'—'}kg × ${st.reps||'—'}`)
+        .map((st,i) => `S${i+1}: ${st.bw?'PC':(st.kg||'—')+'kg'} × ${st.reps||'—'}`)
         .join('  ·  ');
       return `<div class="hs-ex-row">
         <div class="hs-ex-name">${ex.name}</div>
