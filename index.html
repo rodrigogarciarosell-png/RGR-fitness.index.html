@@ -527,7 +527,7 @@ body {
 .hs-ex-name { font-weight: 600; margin-bottom: 3px; }
 .hs-ex-sets { color: var(--muted); font-family: 'JetBrains Mono',monospace; font-size: 0.68rem; }
 
-/* ── MANUAL GARMIN FIELDS in save bar ── */
+/* ── CAMPOS MANUALES (duración/calorías) ── */
 .manual-fields {
   display: flex; gap: 6px; padding: 8px 0 0;
 }
@@ -907,6 +907,24 @@ body {
       <div class="setting-row" style="border:none;">
         <div><div class="setting-label">Metabolismo basal</div></div>
         <div style="font-family:'JetBrains Mono',monospace;font-size:0.9rem;color:var(--muted);">1,731 kcal</div>
+      </div>
+    </div>
+
+    <!-- Data Export -->
+    <div class="card">
+      <div class="card-label">Exportar datos</div>
+      <div style="font-size:0.75rem;color:var(--muted);margin-bottom:12px;">Descarga toda tu información: sesiones, pesos, composición corporal y configuración.</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <button class="btn-primary" style="font-size:0.85rem;letter-spacing:1px;" onclick="exportJSON()">📦 Exportar todo (JSON)</button>
+        <button class="btn-secondary" style="padding:11px;" onclick="exportSessionsCSV()">📊 Sesiones → CSV</button>
+        <button class="btn-secondary" style="padding:11px;" onclick="exportWeightCSV()">⚖️ Historial de peso → CSV</button>
+        <button class="btn-secondary" style="padding:11px;" onclick="exportWyzeCSV()">🧬 Composición corporal → CSV</button>
+      </div>
+      <div style="font-size:0.62rem;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">Para restaurar en otro dispositivo, importa el archivo JSON.</div>
+      <div class="file-drop" onclick="document.getElementById('import-json-file').click()" style="margin-top:8px;padding:14px;">
+        <input type="file" id="import-json-file" accept=".json" onchange="importJSON(event)">
+        <div style="font-size:0.78rem;color:var(--text);">📥 Importar backup JSON</div>
+        <p>Restaura todos tus datos desde un backup</p>
       </div>
     </div>
 
@@ -1936,7 +1954,9 @@ function toggleSetting(btn, key) {
 
 function saveDefaultTime() {
   const val = document.getElementById('default-time').value;
-  [1,2,4,5].forEach(d => { if (SCHEDULE[d].time) SCHEDULE[d].time = val; });
+  if (!state.customSchedule) state.customSchedule = JSON.parse(JSON.stringify(DEFAULT_SCHEDULE));
+  [1,2,4,5].forEach(d => { if (state.customSchedule[d].workout) state.customSchedule[d].time = val; });
+  saveState();
   renderSchedGrid();
   scheduleAllNotifications();
   showToast('✓ Horario actualizado', 'info');
@@ -1977,6 +1997,106 @@ function showToast(msg, type='') {
 renderWeightChart('weight-chart');
 updateWeightDisplay();
 if (state.wyze && state.wyze.length) renderWyzeMetrics();
+
+// ═══════════════════════════════════════════════════
+// DATA EXPORT / IMPORT
+// ═══════════════════════════════════════════════════
+function downloadFile(content, filename, mime) {
+  const blob = new Blob([content], { type: mime });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
+function todayStr() { return new Date().toISOString().split('T')[0]; }
+
+function exportJSON() {
+  const data = {
+    exportDate: new Date().toISOString(),
+    version: '2.0',
+    profile: { name: 'Rodrigo García', id: '44203003', height: 182, goal: 'Recomposición corporal' },
+    weights: state.weights || [],
+    sessions: state.sessions || [],
+    exerciseHistory: state.exerciseHistory || {},
+    wyze: state.wyze || [],
+    wyzeLastSync: state.wyzeLastSync || null,
+    customSchedule: state.customSchedule || null,
+    settings: state.settings || {}
+  };
+  downloadFile(JSON.stringify(data, null, 2), `RGR-fitness-backup-${todayStr()}.json`, 'application/json');
+  showToast('✓ JSON exportado', 'info');
+}
+
+function exportSessionsCSV() {
+  const sessions = state.sessions || [];
+  if (!sessions.length) { showToast('Sin sesiones para exportar'); return; }
+  const typeNames = { torso1:'Torso 1 - Empuje', torso2:'Torso 2 - Espalda', leg1:'Pierna 1 - Cuadriceps', leg2:'Pierna 2 - Posterior' };
+  const rows = [['Fecha','Hora','Tipo','Duracion (min)','Calorias','Volumen (kg)','Ejercicio','Serie','Peso (kg)','Reps']];
+  sessions.forEach(s => {
+    const d = new Date(s.date);
+    const fecha = d.toLocaleDateString('es-PE');
+    const hora = d.toLocaleTimeString('es-PE', {hour:'2-digit',minute:'2-digit'});
+    const tipo = typeNames[s.type] || s.type;
+    if (s.exercises && s.exercises.length) {
+      s.exercises.forEach(ex => {
+        ex.sets.forEach((set, si) => {
+          if (set.kg || set.reps) rows.push([fecha, hora, tipo, s.duration||'', s.calories||'', s.totalVolume||'', ex.name, 'S'+(si+1), set.kg||'', set.reps||'']);
+        });
+      });
+    } else {
+      rows.push([fecha, hora, tipo, s.duration||'', s.calories||'', s.totalVolume||'', '', '', '', '']);
+    }
+  });
+  const csv = rows.map(r => r.map(v => '"'+v+'"').join(',')).join('\n');
+  downloadFile('\uFEFF' + csv, `RGR-sesiones-${todayStr()}.csv`, 'text/csv;charset=utf-8');
+  showToast('✓ Sesiones exportadas', 'info');
+}
+
+function exportWeightCSV() {
+  const weights = state.weights || [];
+  if (!weights.length) { showToast('Sin datos de peso'); return; }
+  const rows = [['Fecha','Peso (kg)']];
+  weights.forEach(w => rows.push([w.date, w.val]));
+  const csv = rows.map(r => r.join(',')).join('\n');
+  downloadFile('\uFEFF' + csv, `RGR-peso-${todayStr()}.csv`, 'text/csv;charset=utf-8');
+  showToast('✓ Peso exportado', 'info');
+}
+
+function exportWyzeCSV() {
+  const wyze = state.wyze || [];
+  if (!wyze.length) { showToast('Sin datos Wyze importados'); return; }
+  const rows = [['Fecha','Peso (kg)','IMC','% Grasa','Musculo (lb)','% Musculo','% Agua','Magra (lb)','Hueso (lb)','% Proteina','Grasa Visceral','TMB','Edad Metab','Grasa (lb)']];
+  wyze.forEach(m => {
+    rows.push([m.date, m.weightKg||'', m.bmi||'', m.bodyFat||'', m.muscleMassLb||'', m.muscleMassPct||'', m.bodyWater||'', m.leanBodyMassLb||'', m.boneMassLb||'', m.protein||'', m.visceralFat||'', m.bmr||'', m.metabolicAge||'', m.fatContentLb||'']);
+  });
+  const csv = rows.map(r => r.map(v => '"'+v+'"').join(',')).join('\n');
+  downloadFile('\uFEFF' + csv, `RGR-composicion-${todayStr()}.csv`, 'text/csv;charset=utf-8');
+  showToast('✓ Composición exportada', 'info');
+}
+
+function importJSON(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (data.weights) state.weights = data.weights;
+      if (data.sessions) state.sessions = data.sessions;
+      if (data.exerciseHistory) state.exerciseHistory = data.exerciseHistory;
+      if (data.wyze) state.wyze = data.wyze;
+      if (data.wyzeLastSync) state.wyzeLastSync = data.wyzeLastSync;
+      if (data.customSchedule) state.customSchedule = data.customSchedule;
+      if (data.settings) state.settings = data.settings;
+      saveState();
+      renderWeekStrip(); renderTodayBlock(); renderProgressView();
+      showToast('✓ Backup restaurado', 'info');
+    } catch(err) { showToast('Error al leer el JSON'); }
+  };
+  reader.readAsText(file);
+}
+
 </script>
 </body>
 </html>
